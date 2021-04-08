@@ -70,7 +70,7 @@
                         <p>
                             Sensor Seleccionado: <em> {{ nameTemperatura }} </em>
                         </p>
-                        <a [routerLink]="['/home',{outlets:{'home': 'temperatura'}}]" routerLinkActive="active" 
+                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'temperatura'}}]" routerLinkActive="active" 
                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
                         (click)="toDetails(nameTemperatura)">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>
@@ -143,7 +143,7 @@
                         <p>
                             Sensor Seleccionado: <em> {{ namePH }} </em>
                         </p>
-                        <a [routerLink]="['/home',{outlets:{'home': 'ph'}}]" routerLinkActive="active" 
+                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'ph'}}]" routerLinkActive="active" 
                         (click)="toDetails(namePH)"
                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>
@@ -217,7 +217,7 @@
                         <p>
                             Sensor Seleccionado: <em> {{ namePrecipitacion }} </em>
                         </p>
-                        <a [routerLink]="['/home',{outlets:{'home': 'precipitacion'}}]" routerLinkActive="active"
+                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'precipitacion'}}]" routerLinkActive="active"
                         (click)="toDetails(namePrecipitacion)" 
                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>
@@ -290,7 +290,7 @@
                         <p>
                             Sensor Seleccionado: <em> {{ nameHumedad }} </em>
                         </p>
-                        <a [routerLink]="['/home',{outlets:{'home': 'humedad'}}]" routerLinkActive="active"
+                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'humedad'}}]" routerLinkActive="active"
                         (click)="toDetails(nameHumedad)"
                         class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/Services/Sesion/login.service';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +13,18 @@ export class HeaderComponent implements OnInit {
   public isCollapsed2 = true;
   public isCollapsed3 = true;
 
-  constructor() { }
+  private link = ['/login'];
+
+  constructor(
+    private login: LoginService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  clickLogout(){
+    this.login.logout()
   }
 
 }
