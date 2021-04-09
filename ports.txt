@@ -1,0 +1,8 @@
+Nginx port
+80
+
+Grafana port
+3000
+
+Influxdb port
+8086
