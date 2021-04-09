@@ -33,8 +33,8 @@ export class HumedadComponent implements OnInit {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.sensor = this.keeper.getSensor()
 
-    this.srcInicio = this.keeper.getEmbeddedUrl(this.sensor,"humedad","inicio")
-    this.srcHistorico = this.keeper.getEmbeddedUrl(this.sensor,"humedad","historico")
+    this.srcInicio = this.keeper.getEmbeddedUrl("humedad","inicio",this.sensor)
+    this.srcHistorico = this.keeper.getEmbeddedUrl("humedad","historico",this.sensor)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);

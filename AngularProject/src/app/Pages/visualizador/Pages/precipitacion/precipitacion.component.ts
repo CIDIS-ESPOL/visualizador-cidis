@@ -33,8 +33,8 @@ export class PrecipitacionComponent implements OnInit {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.sensor = this.keeper.getSensor()
 
-    this.srcInicio = this.keeper.getEmbeddedUrl(this.sensor,"precipitacion","inicio")
-    this.srcHistorico = this.keeper.getEmbeddedUrl(this.sensor,"precipitacion","historico")
+    this.srcInicio = this.keeper.getEmbeddedUrl("precipitacion","inicio",this.sensor)
+    this.srcHistorico = this.keeper.getEmbeddedUrl("precipitacion","historico",this.sensor)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);

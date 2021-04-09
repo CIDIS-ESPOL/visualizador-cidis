@@ -33,8 +33,8 @@ export class PhComponent implements OnInit {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.sensor = this.keeper.getSensor()
 
-    this.srcInicio = this.keeper.getEmbeddedUrl(this.sensor,"ph","inicio")
-    this.srcHistorico = this.keeper.getEmbeddedUrl(this.sensor,"ph","historico")
+    this.srcInicio = this.keeper.getEmbeddedUrl("ph","inicio",this.sensor)
+    this.srcHistorico = this.keeper.getEmbeddedUrl("ph","historico",this.sensor)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);

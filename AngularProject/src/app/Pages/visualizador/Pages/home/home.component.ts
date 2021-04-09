@@ -44,12 +44,12 @@ export class HomeComponent implements OnInit {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.sensores = [ ...this.keeper.getSensorNames() ];
 
-    this.nameTemperatura = this.namePH = this.namePrecipitacion = this.nameHumedad = "Sensor A";
+    this.nameTemperatura = this.namePH = this.namePrecipitacion = this.nameHumedad = this.keeper.getSensor();
 
-    this.srcTemperatura = this.keeper.getEmbeddedUrl("Sensor A","temperatura","inicio")
-    this.srcPH = this.keeper.getEmbeddedUrl("Sensor A","ph","inicio")
-    this.srcPrecipitacion = this.keeper.getEmbeddedUrl("Sensor A","precipitacion","inicio")
-    this.srcHumedad = this.keeper.getEmbeddedUrl("Sensor A","humedad","inicio")
+    this.srcTemperatura = this.keeper.getEmbeddedUrl("temperatura","inicio",this.keeper.getSensor())
+    this.srcPH = this.keeper.getEmbeddedUrl("ph","inicio",this.keeper.getSensor())
+    this.srcPrecipitacion = this.keeper.getEmbeddedUrl("precipitacion","inicio",this.keeper.getSensor())
+    this.srcHumedad = this.keeper.getEmbeddedUrl("humedad","inicio",this.keeper.getSensor())
 
     this.urlSafeTemperatura= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcTemperatura);
     this.urlSafePH= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPH);
@@ -59,24 +59,24 @@ export class HomeComponent implements OnInit {
 
   clickTemperatura(index: number){
     this.nameTemperatura = this.sensores[index]
-    this.urlSafeTemperatura= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl(this.nameTemperatura,"temperatura","inicio"));
+    this.urlSafeTemperatura= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("temperatura","inicio",this.nameTemperatura));
     
   }
 
   clickPH(index: number){
     this.namePH = this.sensores[index]
-    this.urlSafePH= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl(this.namePH,"ph","inicio"));
+    this.urlSafePH= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("ph","inicio",this.namePH));
     
   }
 
   clickPrecipitacion(index: number){
     this.namePrecipitacion = this.sensores[index]
-    this.urlSafePrecipitacion= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl(this.namePrecipitacion,"precipitacion","inicio"));
+    this.urlSafePrecipitacion= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("precipitacion","inicio",this.namePrecipitacion));
   }
 
   clickHumedad(index: number){
     this.nameHumedad = this.sensores[index]
-    this.urlSafeHumedad = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl(this.nameHumedad,"humedad","inicio"));
+    this.urlSafeHumedad = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("humedad","inicio",this.nameHumedad));
   }
 
   toDetails(name:string){

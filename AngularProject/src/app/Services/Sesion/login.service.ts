@@ -1,5 +1,4 @@
 import { HttpUrl } from './../../Resources/Constantes/http-url';
-import { HttpClient } from '@angular/common/http';
 import { HttpRequestService } from './../HTTP/http-request.service';
 import { HttpHeaders } from '@angular/common/http';
 import { SesionService } from './sesion.service';
@@ -17,7 +16,6 @@ export class LoginService {
   constructor(
     private session: SesionService,
     private http: HttpRequestService,
-    private httpClient: HttpClient,
     ) { }
 
   async login(username: string, password: string){
@@ -47,7 +45,9 @@ export class LoginService {
       console.log(response.message)
       
       if(response.message === 'Logged In'){
-        this.session.loginSuccesful()
+        console.log(response.token)
+        console.log(response.apikey)
+        this.session.loginSuccesful(response.token, response.apikey)
         return true
       }
       alert('Usuario o contraseña incorrectos')

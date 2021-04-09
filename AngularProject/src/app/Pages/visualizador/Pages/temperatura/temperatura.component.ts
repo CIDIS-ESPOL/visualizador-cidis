@@ -33,8 +33,8 @@ export class TemperaturaComponent implements OnInit {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.sensor = this.keeper.getSensor()
 
-    this.srcInicio = this.keeper.getEmbeddedUrl(this.sensor,"temperatura","inicio")
-    this.srcHistorico = this.keeper.getEmbeddedUrl(this.sensor,"temperatura","historico")
+    this.srcInicio = this.keeper.getEmbeddedUrl("temperatura","inicio",this.sensor)
+    this.srcHistorico = this.keeper.getEmbeddedUrl("temperatura","historico",this.sensor)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);

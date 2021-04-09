@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
+import * as Cookies from 'js-cookie';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LocalStorageService {
+export class CookieService {
 
   constructor() { }
 
   public setItem(key: string, value: string) {
-    localStorage.setItem(key, value);
-  
+    Cookies.set(key, value);
   }
     
   public getItem(key: string){ 
-    return localStorage.getItem(key)
+    return Cookies.get(key)
   }
   public removeItem(key:string) {
-    localStorage.removeItem(key);
+    Cookies.remove(key);
   }
-  public clear(){
-    localStorage.clear(); 
-  }
+
 }
