@@ -2,6 +2,8 @@
 
 sudo /bin/systemctl start grafana-server
 
+#sudo /bin/systemctl restart grafana-server
+
 cd MiddlewareGrafanaServer
 nodejs server.js
 

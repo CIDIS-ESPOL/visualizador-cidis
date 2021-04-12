@@ -6,3 +6,21 @@ Grafana port
 
 Influxdb port
 8086
+
+docker run influxdb --network influxdb-telegraf-net -p 8086:8086
+docker run telegraf --network influxdb-telegraf-net -p 8086:8086
+
+docker run -d --name=influxdb -p 8086:8086 -v /tmp/testdata/influx:/root/.influxdbv2 --net=influxdb-telegraf-net quay.io/influxdb/influxdb:v2.0.4
+
+docker run -d --name=telegraf -v C:/Users/USUARIO/Documents/telegraf-config/telegraf.conf:/var/lib/influxdb --net=influxdb-telegraf-net telegraf
+
+C:/Users/USUARIO/Documents/telegraf-config/telegraf.conf
+
+Influxdb
+user: cidis-espol
+password: cidis@ESPOL@2021
+
+Grafana
+user: admin
+password: c1d1sESPOL2021
+api-key: eyJrIjoiTlNzU1FqNzUzMjVNRmFReEp4dm95dzVpcklCRmhVbDEiLCJuIjoiV2ViIEFQSSIsImlkIjoxfQ==

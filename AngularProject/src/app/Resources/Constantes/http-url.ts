@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 
 
 export class HttpUrl {
-    static urlGrafana = 'http://localhost:3000/d-solo/'
+    static urlGrafana = 'http://localhost:8086/d/'
     static urlMiddleware = 'http://localhost:4000/'
 
     static httpOptionsRest = {

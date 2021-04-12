@@ -14,24 +14,24 @@ export class Keeper{
     constructor(){
 
         this.links.set("temperatura",{
-            inicio : HttpUrl.urlGrafana + UidGrafana.uidSensorA + "4&var-Sensores=",
-            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "14&var-Sensores=",
-
-        })
-
-        this.links.set("humedad",{
-            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "10&var-Sensores=",
-            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "18&var-Sensores=",
-        })
-
-        this.links.set("ph",{
-            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "8&var-Sensores=",
+            inicio : HttpUrl.urlGrafana + UidGrafana.uidSensorA + "10&var-Sensores=",
             historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "16&var-Sensores=",
 
         })
 
+        this.links.set("humedad",{
+            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "6&var-Sensores=",
+            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "8&var-Sensores=",
+        })
+
+        this.links.set("ph",{
+            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "14&var-Sensores=",
+            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "12&var-Sensores=",
+
+        })
+
         this.links.set("precipitacion",{
-            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "12&var-Sensores=",
+            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "4&var-Sensores=",
             historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "2&var-Sensores="
         })
     }
