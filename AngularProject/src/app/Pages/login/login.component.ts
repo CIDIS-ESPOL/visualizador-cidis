@@ -37,14 +37,13 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    
     if(this.login.login(this.checkoutForm.value["user"],this.checkoutForm.value["password"])){
       this.router.navigate(this.link);
     }
-    else{
-      alert("Usuario o Contraseña incorrectos")
-    }
       
     this.checkoutForm.reset();
+
   }
 
 }

@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { SesionService } from './sesion.service';
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -16,6 +17,7 @@ export class LoginService {
   constructor(
     private session: SesionService,
     private http: HttpRequestService,
+    private router: Router,
     ) { }
 
   async login(username: string, password: string){
@@ -48,6 +50,10 @@ export class LoginService {
         console.log(response.token)
         console.log(response.apikey)
         this.session.loginSuccesful(response.token, response.apikey)
+        let currentUrl = this.router.url;
+        this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          this.router.navigate([currentUrl]);
+        });
         return true
       }
       alert('Usuario o contraseña incorrectos')
