@@ -19,18 +19,17 @@ export class LoginComponent implements OnInit {
     password: ''
   });
 
-  private link = ['/dashboard/home'];
+  private link = ['/seleccion'];
 
   constructor(
     private login: LoginService,
     private session: SesionService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private singleton: SingletonService,
   ) { }
 
   ngOnInit(): void {
-    this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
+    
     if(this.session.isLoggedIn()){
       this.router.navigate(this.link);
     }

@@ -5,56 +5,130 @@ import { UidGrafana } from '../Constantes/uid-grafana'
 
 export class Keeper{
 
+    private username: string = "";
+
     private sensor: string = "";
 
+    private bucket: string = "";
+    private cultivo: string = "";
+    private finca: string = "";
+
+    private var_bucket: string = "";
+    private var_cultivo: string = "";
+    private var_finca: string = "";
+
     private sensores = [];
+
+    private cultivos = []
+    private fincas = []
 
     private links = new Map()
 
     constructor(){
+    }
 
-        this.links.set("temperatura",{
-            inicio : HttpUrl.urlGrafana + UidGrafana.uidSensorA + "10&var-Sensores=",
-            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "16&var-Sensores=",
+    public getUsername(){
+        return this.username
+    }
 
-        })
+    public getCultivo(){
+        return this.cultivo
+    }
 
-        this.links.set("humedad",{
-            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "6&var-Sensores=",
-            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "8&var-Sensores=",
-        })
+    public getCultivos(){
+        return this.cultivos
+    }
 
-        this.links.set("ph",{
-            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "14&var-Sensores=",
-            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "12&var-Sensores=",
+    public getFinca(){
+        return this.finca
+    }
 
-        })
-
-        this.links.set("precipitacion",{
-            inicio: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "4&var-Sensores=",
-            historico: HttpUrl.urlGrafana + UidGrafana.uidSensorA + "2&var-Sensores="
-        })
+    public getFincas(){
+        return this.fincas
     }
 
     public getSensorNames(){
         return this.sensores
-    }
-
-    public getEmbeddedUrl(key: string, atribute: string, sensor:string){
-        return this.links.get(key)[atribute] + sensor
     }
     
     public getSensor(){
         return this.sensor;
     }
 
+    public getEmbeddedUrl(key: string, atribute: string, finca:string){
+        //return this.links.get(key)[atribute] + sensor
+        return HttpUrl.urlGrafana + this.links.get(key)[atribute] 
+        + this.var_bucket + this.bucket + this.var_cultivo + this.cultivo 
+        + this.var_finca + finca
+    }
+
+    public setUsername(username: string){
+        this.username = username
+    }
+
     public setSensor(sensor:string){
         this.sensor = sensor
+    }
+
+    public setBucket(bucket: string){
+        this.bucket = bucket
+    }
+
+    public setCultivo(cultivo: string){
+        this.cultivo = cultivo
+    }
+
+    public setCultivos(cultivos:any){
+        this.cultivos = cultivos
+    }
+
+    public setFinca(finca: string){
+        this.finca = finca
+    }
+
+    public setFincas(fincas: any){
+        this.fincas = fincas
+    }
+
+    public setVarBucket(var_bucket: any){
+        this.var_bucket = var_bucket
+    }
+
+    public setVarCultivo(var_cultivo: any){
+        this.var_cultivo = var_cultivo
+    }
+
+    public setVarFinca(var_finca: any){
+        this.var_finca = var_finca
     }
 
     public setSensores(sensores: any){
         this.sensores = sensores
     }
 
+    public init_links(lista: Array<number>){
+        this.links.set("temperatura",{
+            inicio : lista[0],
+            historico: lista[1],
+
+        })
+
+        this.links.set("presion",{
+            inicio: lista[2],
+            historico: lista[3],
+        })
+
+        this.links.set("humedad",{
+            inicio: lista[4],
+            historico: lista[5],
+
+        })
+    }
+
+    public print_itself(){
+        console.log(this)
+    }
+
+    
     
 }

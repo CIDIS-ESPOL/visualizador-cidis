@@ -7,12 +7,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './Pages/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SeleccionCultivoComponent } from './Pages/seleccion-cultivo/seleccion-cultivo.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    SeleccionCultivoComponent,
   ],
   imports: [
     BrowserModule,

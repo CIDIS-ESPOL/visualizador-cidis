@@ -12,19 +12,7 @@ export class SingletonService {
   private objectSource = new BehaviorSubject(new Keeper());
   currentObject = this.objectSource.asObservable();
 
-  constructor(private http: HttpRequestService) { 
-
-    this.http.get(HttpUrl.urlMiddleware + 'sensores', {})
-        .then( result => {
-            let response: any = result
-            console.log(response.message[0])
-            this.objectSource.value.setSensores(response.message)
-            this.objectSource.value.setSensor(response.message[0])
-        }).catch(error => {
-            console.log(error)
-        })
-
-  }
+  constructor() {}
 
   changeObject(objectSource: Keeper) {
     this.objectSource.next(objectSource);

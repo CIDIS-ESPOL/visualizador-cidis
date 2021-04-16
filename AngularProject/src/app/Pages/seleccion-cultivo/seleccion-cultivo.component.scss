@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css?family=Numans");
+
+html,
+body {
+  background-image: url("../../../assets/images/abstract-blur-green-nature.jpg");
+  background-size: cover;
+  background-repeat: repeat-y;
+  height: 100%;
+  font-family: "Numans", sans-serif;
+}
+
+.titulo {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 80%;
+}
+
+.cartas {
+  width: 20%;
+}
+
+.imagen {
+  width: auto;
+  height: 15vw;
+  object-fit: cover;
+}
+
+:host {
+  display: block;
+  font-size: 18px;
+}
+
+.tabs {
+  width: 80%;
+
+  &__nav {
+    border-bottom: 2px solid #ff3366;
+    display: flex;
+  }
+
+  &__nav-item {
+    background-color: #f0f0f0;
+    border-radius: 5px 5px 0px 0px;
+    cursor: pointer;
+    margin-right: 4px;
+    padding: 10px 25px 10px 25px;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+
+    &--on {
+      background-color: #ff3366;
+      color: #ffffff;
+
+      &:hover {
+        background-color: #ff3366;
+      }
+    }
+  }
+
+  &__content {
+    //border: 1px solid #cccccc ;
+    //border-top-width: 0px ;
+    height: 70%;
+    overflow: auto;
+    padding: 25px 25px 25px 25px;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__tab {
+    & > *:first-child {
+      margin-top: 0px;
+    }
+
+    & > *:last-child {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+/*
+headeer top
+
+*/
+
+.mx-background-top-linear {
+  background: -webkit-linear-gradient(45deg, #54d400 48%, #1b1e21 48%);
+  background: -webkit-linear-gradient(left, #54d400 48%, #1b1e21 48%);
+  background: linear-gradient(45deg, #54d400 48%, #1b1e21 48%);
+}

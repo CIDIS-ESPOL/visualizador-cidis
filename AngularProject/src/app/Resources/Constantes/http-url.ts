@@ -5,6 +5,11 @@ export class HttpUrl {
     static urlGrafana = 'http://localhost:8086/d/'
     static urlMiddleware = 'http://localhost:4000/'
 
+    static url_login = HttpUrl.urlMiddleware + 'users/login'
+    static url_grafana_config = HttpUrl.urlMiddleware + 'config/configuracion'
+    static url_cultivos_1 = HttpUrl.urlMiddleware + 'external/cultivos'
+    static url_cultivos_2 = HttpUrl.urlMiddleware + 'external/cultivos'
+
     static httpOptionsRest = {
         headers: new HttpHeaders({
             "content-type": "application/json",
@@ -22,4 +27,8 @@ export class HttpUrl {
             */
         })
     };
+
+    public static setUrl_Grafana(url: string){
+        HttpUrl.urlGrafana = url
+    }
 }
