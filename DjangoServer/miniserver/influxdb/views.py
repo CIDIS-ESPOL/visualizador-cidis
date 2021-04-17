@@ -61,10 +61,10 @@ def get_fincas(request):
     if request.user.is_authenticated:
         bucket = request.data.get("bucket")
         cultivo = request.data.get("cultivo")
-        result = influxdbConnector.get_fincas(bucket,cultivo)
-        if result is not None:
+        fincas = influxdbConnector.get_fincas(bucket,cultivo)
+        if fincas is not None:
             message = {
-                'result': result
+                'fincas': fincas
             }
             return Response(message,status=status.HTTP_200_OK)
         return Response({'message': 'Error al obtener los cultivos'},status=status.HTTP_400_BAD_REQUEST)

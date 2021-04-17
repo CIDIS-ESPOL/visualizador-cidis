@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit {
 
   clickLogout(){
     this.login.logout()
+    this.router.navigate(this.link)
   }
 
 }

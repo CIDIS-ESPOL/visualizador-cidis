@@ -16,7 +16,7 @@ export class HumedadComponent implements OnInit {
 
   keeper: Keeper = new Keeper();
 
-  sensor: string = ""
+  finca: string = ""
 
   srcInicio:string = "";
   srcHistorico:string = "";
@@ -31,10 +31,10 @@ export class HumedadComponent implements OnInit {
 
   ngOnInit(): void {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
-    this.sensor = this.keeper.getSensor()
+    this.finca = this.keeper.getFinca()
 
-    this.srcInicio = this.keeper.getEmbeddedUrl("humedad","inicio",this.sensor)
-    this.srcHistorico = this.keeper.getEmbeddedUrl("humedad","historico",this.sensor)
+    this.srcInicio = this.keeper.getEmbeddedUrl("humedad","inicio",this.finca)
+    this.srcHistorico = this.keeper.getEmbeddedUrl("humedad","historico",this.finca)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);

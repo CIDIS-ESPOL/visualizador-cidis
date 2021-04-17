@@ -18,69 +18,78 @@ export class HomeComponent implements OnInit {
 
   keeper: Keeper = new Keeper();
 
-  sensores: Array<string> = []
+  public cultivo: string = ""
+
+  fincas: Array<string> = []
 
   nameTemperatura: string = "";
-  namePH: string = ""
-  namePrecipitacion: string = "";
+  namePresion: string = ""
   nameHumedad: string = "";
+  nameUV: string = "";
 
   srcTemperatura: string = ""
-  srcPH:string = ""
-  srcPrecipitacion: string = ""
+  srcPresion:string = ""
   srcHumedad:string = ""
+  srcUV: string = ""
+  
 
   urlSafeTemperatura!: SafeResourceUrl;
-  urlSafePH!: SafeResourceUrl;
-  urlSafePrecipitacion!: SafeResourceUrl;
+  urlSafePresion!: SafeResourceUrl;
   urlSafeHumedad!: SafeResourceUrl;
+  urlSafeUV!: SafeResourceUrl;
+  
 
   constructor(
     private singleton: SingletonService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
     ) { }
 
   ngOnInit(): void {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
-    this.sensores = [ ...this.keeper.getSensorNames() ];
+    this.fincas = [ ...this.keeper.getFincas() ];
+    this.cultivo = this.keeper.getCultivo();
 
-    this.nameTemperatura = this.namePH = this.namePrecipitacion = this.nameHumedad = this.keeper.getSensor();
+    this.nameTemperatura = this.namePresion = this.nameUV = this.nameHumedad = this.keeper.getFinca();
 
-    this.srcTemperatura = this.keeper.getEmbeddedUrl("temperatura","inicio",this.keeper.getSensor())
-    this.srcPH = this.keeper.getEmbeddedUrl("ph","inicio",this.keeper.getSensor())
-    this.srcPrecipitacion = this.keeper.getEmbeddedUrl("precipitacion","inicio",this.keeper.getSensor())
-    this.srcHumedad = this.keeper.getEmbeddedUrl("humedad","inicio",this.keeper.getSensor())
+    this.srcTemperatura = this.keeper.getEmbeddedUrl("temperatura","inicio",this.keeper.getFinca())
+    this.srcPresion = this.keeper.getEmbeddedUrl("presion","inicio",this.keeper.getFinca())
+    this.srcHumedad = this.keeper.getEmbeddedUrl("humedad","inicio",this.keeper.getFinca())
+    this.srcUV = this.keeper.getEmbeddedUrl("uv","inicio",this.keeper.getFinca())
 
     this.urlSafeTemperatura= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcTemperatura);
-    this.urlSafePH= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPH);
-    this.urlSafePrecipitacion= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPrecipitacion);
+    this.urlSafePresion= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPresion);
     this.urlSafeHumedad= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHumedad);
+    this.urlSafeUV= this.sanitizer.bypassSecurityTrustResourceUrl(this.srcUV);
   }
 
   clickTemperatura(index: number){
-    this.nameTemperatura = this.sensores[index]
+    this.nameTemperatura = this.fincas[index]
     this.urlSafeTemperatura= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("temperatura","inicio",this.nameTemperatura));
     
   }
 
-  clickPH(index: number){
-    this.namePH = this.sensores[index]
-    this.urlSafePH= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("ph","inicio",this.namePH));
+  clickPresion(index: number){
+    this.namePresion = this.fincas[index]
+    this.urlSafePresion= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("presion","inicio",this.namePresion));
     
   }
 
-  clickPrecipitacion(index: number){
-    this.namePrecipitacion = this.sensores[index]
-    this.urlSafePrecipitacion= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("precipitacion","inicio",this.namePrecipitacion));
-  }
-
   clickHumedad(index: number){
-    this.nameHumedad = this.sensores[index]
+    this.nameHumedad = this.fincas[index]
     this.urlSafeHumedad = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("humedad","inicio",this.nameHumedad));
   }
 
-  toDetails(name:string){
-    this.keeper.setSensor(name)
+  clickUV(index: number){
+    this.nameUV = this.fincas[index]
+    this.urlSafeUV= this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrl("uv","inicio",this.nameUV));
   }
+
+  
+
+  toDetails(finca:string){
+    this.keeper.setFinca(finca)
+  }
+
+  
 
 }

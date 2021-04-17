@@ -48,6 +48,8 @@ export class GrafanaConfigService {
         lista.push(response["presion_historico"])
         lista.push(response["humedad_inicio"])
         lista.push(response["humedad_historico"])
+        lista.push(response["uv_inicio"])
+        lista.push(response["uv_historico"])
 
         this.keeper.init_links(lista)
 

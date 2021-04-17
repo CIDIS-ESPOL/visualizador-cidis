@@ -7,8 +7,8 @@ export class HttpUrl {
 
     static url_login = HttpUrl.urlMiddleware + 'users/login'
     static url_grafana_config = HttpUrl.urlMiddleware + 'config/configuracion'
-    static url_cultivos_1 = HttpUrl.urlMiddleware + 'external/cultivos'
-    static url_cultivos_2 = HttpUrl.urlMiddleware + 'external/cultivos'
+    static url_cultivos = HttpUrl.urlMiddleware + 'external/cultivos'
+    static url_fincas = HttpUrl.urlMiddleware + 'external/fincas'
 
     static httpOptionsRest = {
         headers: new HttpHeaders({

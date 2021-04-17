@@ -1,8 +1,8 @@
-import { HttpUrl } from 'src/app/Resources/Constantes/http-url';
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Keeper } from 'src/app/Resources/Clases/keeper';
+import { HttpUrl } from 'src/app/Resources/Constantes/http-url';
 import { HttpRequestService } from '../HTTP/http-request.service';
 import { CookieService } from '../Storage/cookie.service';
 import { SingletonService } from './singleton.service';
@@ -10,9 +10,11 @@ import { SingletonService } from './singleton.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CultivoService {
+export class FincaService {
 
   private keeper = new Keeper()
+
+  private link = ['/dashboard/home'];
 
   constructor(
     private http: HttpRequestService,
@@ -21,16 +23,19 @@ export class CultivoService {
     private router: Router,
   ) { }
 
-  get_cultivos(bucket: string) {
+  get_fincas(cultivo: string) {
 
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
 
-    this.keeper.setBucket(bucket)
+    let bucket = this.keeper.getBucket()
+
+    this.keeper.setCultivo(cultivo)
 
     let token = this.cookie.getItem('Token')
 
     let data = {
-      bucket: bucket
+      bucket: bucket,
+      cultivo: cultivo
     }
 
     let httpOptionsRest = {
@@ -40,25 +45,18 @@ export class CultivoService {
       })
     };
 
-    this.http.post(HttpUrl.url_cultivos,data,httpOptionsRest)
+    this.http.post(HttpUrl.url_fincas,data,httpOptionsRest)
     .then(result => {
       let response:any = result
-      let cultivos: { nombre: any; imagen: string; }[] = []
-      response.forEach((element: any) => {
-        let cultivo = {
-          nombre: element["nombre"],
-          imagen : HttpUrl.urlMiddleware + "static" + element["imagen"]
-        }
-        cultivos.push(cultivo)
-      });
-      this.keeper.setCultivos(cultivos)
-      let currentUrl = this.router.url;
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate([currentUrl]);
-      });
+
+      this.keeper.setFincas(response["fincas"])
+      this.keeper.setFinca(response["fincas"][0])
+     
+      this.router.navigate(this.link);
     })
     .catch(error => {
       console.log(error)
+      alert('Hubo un problema al enviar solicitud')
     })
 
     /*

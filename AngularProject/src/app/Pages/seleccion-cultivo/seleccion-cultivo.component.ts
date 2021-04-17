@@ -1,3 +1,4 @@
+import { FincaService } from './../../Services/Data/finca.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Keeper } from 'src/app/Resources/Clases/keeper';
@@ -29,6 +30,7 @@ export class SeleccionCultivoComponent implements OnInit {
     private login: LoginService,
     private router: Router,
     private singleton: SingletonService,
+    private finca: FincaService,
 
   ) { 
     this.selectedTab = "one";
@@ -38,6 +40,11 @@ export class SeleccionCultivoComponent implements OnInit {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.cultivos = [ ...this.keeper.getCultivos()]
     this.username = this.keeper.getUsername()
+
+  }
+
+  clickCultivo(cultivo: string){
+    this.finca.get_fincas(cultivo)
 
   }
 

@@ -1,6 +1,7 @@
 /* Made with love by Mutiullah Samim*/
 
 @import url("https://fonts.googleapis.com/css?family=Numans");
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
 html,
 body {
@@ -12,6 +13,10 @@ body {
 }
 
 
+.titulo{
+  font-family: 'Lobster', cursive;
+  color: green;
+}
 
 /*
 .container {

@@ -27,6 +27,10 @@ export class Keeper{
     constructor(){
     }
 
+    public getBucket(){
+        return this.bucket
+    }
+
     public getUsername(){
         return this.username
     }
@@ -121,6 +125,12 @@ export class Keeper{
         this.links.set("humedad",{
             inicio: lista[4],
             historico: lista[5],
+
+        })
+
+        this.links.set("uv",{
+            inicio: lista[6],
+            historico: lista[7],
 
         })
     }

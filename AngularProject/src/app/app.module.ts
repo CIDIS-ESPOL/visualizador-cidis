@@ -21,7 +21,7 @@ import { SeleccionCultivoComponent } from './Pages/seleccion-cultivo/seleccion-c
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

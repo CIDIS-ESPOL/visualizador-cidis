@@ -6,11 +6,11 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-temperatura',
-  templateUrl: './temperatura.component.html',
-  styleUrls: ['./temperatura.component.scss']
+  selector: 'app-presion',
+  templateUrl: './presion.component.html',
+  styleUrls: ['./presion.component.scss']
 })
-export class TemperaturaComponent implements OnInit {
+export class PresionComponent implements OnInit {
 
   @Input()
 
@@ -33,11 +33,10 @@ export class TemperaturaComponent implements OnInit {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.finca = this.keeper.getFinca()
 
-    this.srcInicio = this.keeper.getEmbeddedUrl("temperatura","inicio",this.finca)
-    this.srcHistorico = this.keeper.getEmbeddedUrl("temperatura","historico",this.finca)
+    this.srcInicio = this.keeper.getEmbeddedUrl("presion","inicio",this.finca)
+    this.srcHistorico = this.keeper.getEmbeddedUrl("presion","historico",this.finca)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);
   }
-
 }
