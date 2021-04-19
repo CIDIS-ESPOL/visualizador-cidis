@@ -31,12 +31,28 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Something</h6>
+                    <h6 class="m-0 font-weight-bold text-success">Tiempo</h6>
                     
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    
+                    <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-success" id="dropdownBasic2" ngbDropdownToggle>
+                            Seleccione un tiempo
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                            <button ngbDropdownItem *ngFor="let tiempo of tiempos; index as i;"
+                                (click)="clickTiempo(tiempo)">{{ tiempo }}</button>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <hr>
+                        <p>
+                            Tiempo Seleccionado: <em> {{ tiempoSeleccionado }} </em>
+                        </p>
+                    </div>
                 </div>
             </div>
 

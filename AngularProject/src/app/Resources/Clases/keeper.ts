@@ -22,9 +22,32 @@ export class Keeper{
     private cultivos = []
     private fincas = []
 
+    private tiempos = new Map()
+
     private links = new Map()
 
     constructor(){
+        this.tiempos.set("Últimos 5 minutos","&from=now-5m&to=now")
+        this.tiempos.set("Últimos 15 minutos","&from=now-15m&to=now")
+        this.tiempos.set("Últimos 30 minutos","&from=now-30m&to=now")
+        this.tiempos.set("Última hora","&from=now-1h&to=now")
+        this.tiempos.set("Últimas 3 horas","&from=now-3h&to=now")
+        this.tiempos.set("Últimas 6 horas","&from=now-6h&to=now")
+        this.tiempos.set("Últimas 12 horas","&from=now-12h&to=now")
+        this.tiempos.set("Este día","&from=now%2Fd&to=now")
+        this.tiempos.set("Ayer","&from=now-1d%2Fd&to=now-1d%2Fd")
+        this.tiempos.set("Hace dos días","&from=now-2d%2Fd&to=now-2d%2Fd")
+        this.tiempos.set("Esta semana","&from=now%2Fw&to=now")
+        this.tiempos.set("Semana Pasada","&from=now-1w%2Fw&to=now-1w%2Fw")
+        this.tiempos.set("Este mes","&from=now%2FM&to=now")
+        this.tiempos.set("Mes pasado","&from=now-1M%2FM&to=now-1M%2FM")
+        this.tiempos.set("Este año","&from=now%2Fy&to=now")
+        this.tiempos.set("El año pasado","&from=now-1y%2Fy&to=now-1y%2Fy")
+        this.tiempos.set("Los últimos 5 años","&from=now-5y&to=now")
+    }
+
+    public getTiempos(){
+        return this.tiempos.keys()
     }
 
     public getBucket(){
@@ -63,7 +86,14 @@ export class Keeper{
         //return this.links.get(key)[atribute] + sensor
         return HttpUrl.urlGrafana + this.links.get(key)[atribute] 
         + this.var_bucket + this.bucket + this.var_cultivo + this.cultivo 
-        + this.var_finca + finca
+        + this.var_finca + finca + this.tiempos.get("Últimos 5 minutos")
+    }
+
+    public getEmbeddedUrlByTime(key: string, atribute: string, tiempo:string){
+        //return this.links.get(key)[atribute] + sensor
+        return HttpUrl.urlGrafana + this.links.get(key)[atribute] 
+        + this.var_bucket + this.bucket + this.var_cultivo + this.cultivo 
+        + this.var_finca + this.finca + this.tiempos.get(tiempo)
     }
 
     public setUsername(username: string){

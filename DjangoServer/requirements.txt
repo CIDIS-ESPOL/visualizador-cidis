@@ -1,0 +1,13 @@
+Django
+django-allauth
+django-bootstrap-form
+django-cors-headers
+django-rest-auth
+djangorestframework
+influxdb-client
+pycrypto
+pycryptodomex
+requests
+requests-oauthlib
+requests-unixsocket
+

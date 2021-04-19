@@ -16,6 +16,9 @@ export class TemperaturaComponent implements OnInit {
 
   keeper: Keeper = new Keeper();
 
+  tiempos: Array<string> = []
+  tiempoSeleccionado: string = ""
+
   finca: string = ""
 
   srcInicio:string = "";
@@ -32,12 +35,20 @@ export class TemperaturaComponent implements OnInit {
   ngOnInit(): void {
     this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
     this.finca = this.keeper.getFinca()
+    this.tiempos = [ ...this.keeper.getTiempos() ]
+    this.tiempoSeleccionado = this.tiempos[0]
 
     this.srcInicio = this.keeper.getEmbeddedUrl("temperatura","inicio",this.finca)
     this.srcHistorico = this.keeper.getEmbeddedUrl("temperatura","historico",this.finca)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);
+  }
+
+  clickTiempo(tiempo: string): void{
+    this.tiempoSeleccionado = tiempo
+    this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("temperatura","inicio",tiempo));
+    this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("temperatura","historico",tiempo));
   }
 
 }
