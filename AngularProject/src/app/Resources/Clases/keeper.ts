@@ -16,6 +16,8 @@ export class Keeper{
     private var_bucket: string = "";
     private var_cultivo: string = "";
     private var_finca: string = "";
+    private var_medidas: string = "";
+    private var_finca2: string = "";
 
     private sensores = [];
 
@@ -96,6 +98,14 @@ export class Keeper{
         + this.var_finca + this.finca + this.tiempos.get(tiempo)
     }
 
+    public getEmbeddedUrlByTimeComparacion(medida: string, key: string,tiempo:string, finca2: string){
+        //return this.links.get(key)[atribute] + sensor
+        return HttpUrl.urlGrafana + this.links.get(key) 
+        + this.var_bucket + this.bucket + this.var_cultivo + this.cultivo 
+        + this.var_finca + this.finca + this.tiempos.get(tiempo)
+        + this.var_medidas + medida + this.var_finca2 + finca2
+    }
+
     public setUsername(username: string){
         this.username = username
     }
@@ -124,6 +134,10 @@ export class Keeper{
         this.fincas = fincas
     }
 
+    public setVarMedida(var_medidas: any){
+        this.var_medidas = var_medidas
+    }
+
     public setVarBucket(var_bucket: any){
         this.var_bucket = var_bucket
     }
@@ -134,6 +148,10 @@ export class Keeper{
 
     public setVarFinca(var_finca: any){
         this.var_finca = var_finca
+    }
+
+    public setVarFinca2(var_finca2: any){
+        this.var_finca2 = var_finca2
     }
 
     public setSensores(sensores: any){
@@ -163,6 +181,8 @@ export class Keeper{
             historico: lista[7],
 
         })
+
+        this.links.set("comparacion",lista[8])
     }
 
     public print_itself(){

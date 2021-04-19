@@ -15,9 +15,12 @@ class Configuracion_Grafana(models.Model):
     humedad_historico = models.IntegerField(default=0)
     uv_inicio = models.IntegerField(default=0)
     uv_historico = models.IntegerField(default=0)
+    comparacion = models.IntegerField(default=0)
+    medidas_variable = models.CharField(max_length=200)
     buckets_variable = models.CharField(max_length=200)
     cultivos_variable = models.CharField(max_length=200)
     finca_variable = models.CharField(max_length=200)
+    finca2_variable = models.CharField(max_length=200)
 
     class Configuracion_GrafanaForm(ModelForm):
         class Meta:

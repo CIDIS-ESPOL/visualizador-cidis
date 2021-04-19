@@ -50,12 +50,15 @@ export class GrafanaConfigService {
         lista.push(response["humedad_historico"])
         lista.push(response["uv_inicio"])
         lista.push(response["uv_historico"])
+        lista.push(response["comparacion"])
 
         this.keeper.init_links(lista)
 
         this.keeper.setVarBucket(response["buckets_variable"])
         this.keeper.setVarCultivo(response["cultivos_variable"])
         this.keeper.setVarFinca(response["finca_variable"])
+        this.keeper.setVarMedida(response["medidas_variable"])
+        this.keeper.setVarFinca2(response["finca2_variable"])
       })
       .catch(error => {
         console.log(error)
