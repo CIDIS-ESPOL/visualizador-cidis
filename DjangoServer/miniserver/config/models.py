@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 class Configuracion_Grafana(models.Model):
 
     url = models.CharField(max_length=200)
+    render = models.CharField(max_length=200, blank=True)
+    complement = models.CharField(max_length=200, blank=True)
     temperatura_inicio = models.IntegerField(default=0)
     temperatura_historico = models.IntegerField(default=0) 
     presion_inicio = models.IntegerField(default=0)

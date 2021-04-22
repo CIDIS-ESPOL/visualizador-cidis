@@ -73,6 +73,7 @@ export class LoginService {
       if(error.status === 404)
         message = 'Usuario o contraseña incorrectos'
       alert(message)
+      console.log(error)
       return false
     })
 

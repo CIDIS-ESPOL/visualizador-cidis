@@ -3,4 +3,18 @@
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
+@import url("https://fonts.googleapis.com/css?family=Numans");
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+html,
+body {
+  background-image: url("./assets/images/abstract-blur-green-nature.jpg");
+  background-size: cover;
+  //background-repeat: no-repeat;
+  height: 100%;
+  font-family: "Numans", sans-serif;
+}
+
+
+
 

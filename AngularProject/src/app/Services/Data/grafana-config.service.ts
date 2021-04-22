@@ -39,7 +39,7 @@ export class GrafanaConfigService {
       .then(result => {
         let response: any = result 
 
-        HttpUrl.setUrl_Grafana(response["url"])
+        HttpUrl.setUrl_Grafana(response["url"],response["render"],response["complement"])
 
         let lista = []
         lista.push(response["temperatura_inicio"])

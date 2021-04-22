@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
    path('cultivos', views.get_cultivos),
    path('fincas', views.get_fincas),
+   path('images',views.get_images_grafana)
 ]
 router = routers.DefaultRouter()
 urlpatterns = urlpatterns + router.urls

@@ -106,6 +106,31 @@ export class Keeper{
         + this.var_medidas + medida + this.var_finca2 + finca2
     }
 
+    public getEmbeddedUrlRender(key: string, atribute: string, finca:string){
+        //return this.links.get(key)[atribute] + sensor
+        return HttpUrl.urlGrafanaRender + this.links.get(key)[atribute] 
+        + this.var_bucket + this.bucket + this.var_cultivo + this.cultivo 
+        + this.var_finca + encodeURIComponent(this.finca) + this.tiempos.get("Últimos 5 minutos")
+        + '&width=450&height=200'
+    }
+
+    public getEmbeddedUrlByTimeRender(key: string, atribute: string, tiempo:string){
+        //return this.links.get(key)[atribute] + sensor
+        return HttpUrl.urlGrafanaRender + this.links.get(key)[atribute] 
+        + this.var_bucket + this.bucket + this.var_cultivo + this.cultivo 
+        + this.var_finca + encodeURIComponent(this.finca) + this.tiempos.get(tiempo)
+        + '&width=450&height=200'
+    }
+
+    public getEmbeddedUrlByTimeComparacionRender(medida: string, key: string,tiempo:string, finca2: string){
+        //return this.links.get(key)[atribute] + sensor
+        return HttpUrl.urlGrafanaRender + this.links.get(key) 
+        + this.var_bucket + this.bucket + this.var_cultivo + this.cultivo 
+        + this.var_finca + encodeURIComponent(this.finca) + this.tiempos.get(tiempo)
+        + this.var_medidas + medida + this.var_finca2 + encodeURIComponent(finca2)
+        + '&width=450&height=200'
+    }
+
     public setUsername(username: string){
         this.username = username
     }

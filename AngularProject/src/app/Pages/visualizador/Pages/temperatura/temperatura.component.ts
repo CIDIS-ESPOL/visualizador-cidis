@@ -4,6 +4,7 @@ import { Keeper } from '../../../../Resources/Clases/keeper';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Component, OnInit, Input } from '@angular/core';
+import { PDFService } from 'src/app/Services/Transform/pdf.service';
 
 @Component({
   selector: 'app-temperatura',
@@ -34,7 +35,8 @@ export class TemperaturaComponent implements OnInit {
 
   constructor(
     private singleton: SingletonService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private pdf: PDFService,
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +72,28 @@ export class TemperaturaComponent implements OnInit {
     this.finca2 = finca
     this.srcComparacion = this.keeper.getEmbeddedUrlByTimeComparacion("temperatura","comparacion",this.tiempoSeleccionado,finca);
     this.urlSafeComparacion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcComparacion);
+  }
+
+  generatePDF() {
+
+    let filename = 'reporte-detallado-temperatura-' + this.keeper.getUsername() + '-cultivo-' + this.keeper.getCultivo()
+
+    let listaTexto: Array<string> = []
+
+    listaTexto.push("Reporte detallado del nivel de Temperatura del cultivo: " + this.keeper.getCultivo())
+    listaTexto.push("Datos tomados en el tiempo: " + this.tiempoSeleccionado + " en la finca: " + this.finca)
+    listaTexto.push("Nivel de Temperatura Promedio: ")
+    listaTexto.push("Registro Histórico: ")
+    listaTexto.push("Gráfico Comparativo con la finca " + this.finca2 + ": ")
+    
+    let listaUrl: Array<string> = []
+
+    listaUrl.push(this.keeper.getEmbeddedUrlByTimeRender("temperatura","inicio",this.tiempoSeleccionado))
+    listaUrl.push(this.keeper.getEmbeddedUrlByTimeRender("temperatura","historico",this.tiempoSeleccionado))
+    listaUrl.push(this.keeper.getEmbeddedUrlByTimeComparacionRender("temperatura","comparacion",this.tiempoSeleccionado,this.finca2))
+
+    this.pdf.createPDF(filename, listaTexto,listaUrl)
+
   }
 
 }

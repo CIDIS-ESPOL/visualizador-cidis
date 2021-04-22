@@ -4,6 +4,7 @@ import { Keeper } from '../../../../Resources/Clases/keeper';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Component, OnInit, Input } from '@angular/core';
+import { PDFService } from 'src/app/Services/Transform/pdf.service';
 
 @Component({
   selector: 'app-presion',
@@ -34,7 +35,8 @@ export class PresionComponent implements OnInit {
 
   constructor(
     private singleton: SingletonService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private pdf: PDFService,
   ) { }
 
   ngOnInit(): void {
@@ -60,8 +62,8 @@ export class PresionComponent implements OnInit {
 
   clickTiempo(tiempo: string): void{
     this.tiempoSeleccionado = tiempo
-    this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("temperatura","inicio",tiempo));
-    this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("temperatura","historico",tiempo));
+    this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("presion","inicio",tiempo));
+    this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("presion","historico",tiempo));
     this.srcComparacion = this.keeper.getEmbeddedUrlByTimeComparacion("presion","comparacion",tiempo,this.finca2);
     this.urlSafeComparacion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcComparacion);
   }
@@ -70,5 +72,27 @@ export class PresionComponent implements OnInit {
     this.finca2 = finca
     this.srcComparacion = this.keeper.getEmbeddedUrlByTimeComparacion("presion","comparacion",this.tiempoSeleccionado,finca);
     this.urlSafeComparacion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcComparacion);
+  }
+
+  generatePDF() {
+
+    let filename = 'reporte-detallado-presion-atmosferica-' + this.keeper.getUsername() + '-cultivo-' + this.keeper.getCultivo()
+
+    let listaTexto: Array<string> = []
+
+    listaTexto.push("Reporte detallado del nivel de Presión Atmosférica del cultivo: " + this.keeper.getCultivo())
+    listaTexto.push("Datos tomados en el tiempo: " + this.tiempoSeleccionado + " en la finca: " + this.finca)
+    listaTexto.push("Nivel de Presión Atmosférica Promedio: ")
+    listaTexto.push("Registro Histórico: ")
+    listaTexto.push("Gráfico Comparativo con la finca " + this.finca2 + ": ")
+    
+    let listaUrl: Array<string> = []
+
+    listaUrl.push(this.keeper.getEmbeddedUrlByTimeRender("presion","inicio",this.tiempoSeleccionado))
+    listaUrl.push(this.keeper.getEmbeddedUrlByTimeRender("presion","historico",this.tiempoSeleccionado))
+    listaUrl.push(this.keeper.getEmbeddedUrlByTimeComparacionRender("presion","comparacion",this.tiempoSeleccionado,this.finca2))
+
+    this.pdf.createPDF(filename, listaTexto,listaUrl)
+
   }
 }
