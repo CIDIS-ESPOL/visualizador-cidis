@@ -3,8 +3,6 @@ import { LoginService } from './../../Services/Sesion/login.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Keeper } from 'src/app/Resources/Clases/keeper';
-import { SingletonService } from 'src/app/Services/Data/singleton.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +10,6 @@ import { SingletonService } from 'src/app/Services/Data/singleton.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  keeper: Keeper = new Keeper();
 
   checkoutForm = this.formBuilder.group({
     user: '',

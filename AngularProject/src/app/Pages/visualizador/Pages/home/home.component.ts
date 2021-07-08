@@ -1,6 +1,8 @@
+import { HttpGrafana } from './../../../../Resources/Constantes/http-grafana';
+import { CookieService } from './../../../../Services/Storage/cookie.service';
+import { FincaService } from './../../../../Services/Data/finca.service';
+import { CultivoService } from './../../../../Services/Data/cultivo.service';
 import { PDFService } from './../../../../Services/Transform/pdf.service';
-import { SingletonService } from '../../../../Services/Data/singleton.service';
-import { Keeper } from '../../../../Resources/Clases/keeper';
 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -17,104 +19,186 @@ export class HomeComponent implements OnInit {
 
   isCollapsed = true;
 
-  keeper: Keeper = new Keeper();
+  cultivo: string = ""
 
-  public cultivo: string = ""
+  nameFinca: string = ""
 
   fincas: Array<string> = []
+  
+  medidas: Array<string> = ["temperatura","precipitacion","humedad","uv"]
+  
+  medida: string = ""
 
+  private mapaInicial = new Map([
+    ["modo","normal"],
+    ["panel","temperatura"],
+    ["subpanel","inicio"],
+    ["cultivo",this.cultivo],
+    ["finca",this.fincas[0]],
+    ["medida", this.medidas[0]],
+  ])
+	
+	nameMapa: string = "";
   nameTemperatura: string = "";
-  namePresion: string = ""
+  namePrecipitacion: string = ""
   nameHumedad: string = "";
   nameUV: string = "";
 
   srcTemperatura: string = ""
-  srcPresion: string = ""
+  srcPrecipitacion: string = ""
   srcHumedad: string = ""
   srcUV: string = ""
+  srcMapa: string = ""
 
 
   urlSafeTemperatura!: SafeResourceUrl;
-  urlSafePresion!: SafeResourceUrl;
+  urlSafePrecipitacion!: SafeResourceUrl;
   urlSafeHumedad!: SafeResourceUrl;
   urlSafeUV!: SafeResourceUrl;
+  urlSafeMapa!: SafeResourceUrl;
 
 
   constructor(
-    private singleton: SingletonService,
     public sanitizer: DomSanitizer,
     private pdf: PDFService,
+    private finca: FincaService,
+    private cookie: CookieService,
   ) { }
 
   ngOnInit(): void {
-    this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
-    this.fincas = [...this.keeper.getFincas()];
-    this.cultivo = this.keeper.getCultivo();
+    
+    this.cultivo = this.cookie.getItem("Cultivo") as string
+    this.finca.get_fincas(this.cultivo,this.fincas)
 
-    this.nameTemperatura = this.namePresion = this.nameUV = this.nameHumedad = this.keeper.getFinca();
+    this.nameFinca = this.nameTemperatura = this.namePrecipitacion = this.nameUV = this.nameHumedad = this.fincas[0];
 
-    this.srcTemperatura = this.keeper.getEmbeddedUrl("temperatura", "inicio", this.keeper.getFinca())
-    this.srcPresion = this.keeper.getEmbeddedUrl("presion", "inicio", this.keeper.getFinca())
-    this.srcHumedad = this.keeper.getEmbeddedUrl("humedad", "inicio", this.keeper.getFinca())
-    this.srcUV = this.keeper.getEmbeddedUrl("uv", "inicio", this.keeper.getFinca())
+    this.mapaInicial.set("cultivo",this.cultivo)
+    this.mapaInicial.set("finca",this.fincas[0])
+
+    this.mapaInicial.set("panel","temperatura")
+    this.srcTemperatura = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+
+    this.mapaInicial.set("panel","precipitacion")
+    this.srcPrecipitacion = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+
+    this.mapaInicial.set("panel","humedad")
+    this.srcHumedad = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+
+    this.mapaInicial.set("panel","uv")
+    this.srcUV = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+    
+    this.mapaInicial.set("panel","mapa")
+    this.srcMapa = HttpGrafana.getEmbeddedUrlForMapa(this.mapaInicial)
 
     this.urlSafeTemperatura = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcTemperatura);
-    this.urlSafePresion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPresion);
+    this.urlSafePrecipitacion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPrecipitacion);
     this.urlSafeHumedad = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHumedad);
     this.urlSafeUV = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcUV);
+    this.urlSafeMapa = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcMapa);
+  }
+  
+  clickMapaByMedida(index: number){
+  	this.medida = this.medidas[index]
+  	this.mapaInicial.set("panel","mapa")
+  	this.mapaInicial.set("medida",this.medida)
+  	
+  	this.srcMapa = HttpGrafana.getEmbeddedUrlForMapa(this.mapaInicial)
+  	this.urlSafeMapa = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcMapa);
+  }
+  
+  clickMapaByFinca(index: number) {
+  	this.nameMapa = this.fincas[index]
+  	this.mapaInicial.set("panel","mapa")
+  	this.mapaInicial.set("finca",this.nameMapa)
+  	
+  	this.srcMapa = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+  	this.urlSafeMapa = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcMapa);
+  }
+
+  clickFinca(index: number){
+    this.nameFinca = this.fincas[index]
+    this.clickTemperatura(index);
+    this.clickPrecipitacion(index);
+    this.clickHumedad(index);
+    this.clickUV(index);
   }
 
   clickTemperatura(index: number) {
     this.nameTemperatura = this.fincas[index]
-    this.srcTemperatura = this.keeper.getEmbeddedUrl("temperatura", "inicio", this.nameTemperatura)
+    this.mapaInicial.set("panel","temperatura")
+    this.mapaInicial.set("finca",this.nameTemperatura)
+    
+    this.srcTemperatura = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
     this.urlSafeTemperatura = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcTemperatura );
 
   }
 
-  clickPresion(index: number) {
-    this.namePresion = this.fincas[index]
-    this.srcPresion = this.keeper.getEmbeddedUrl("presion", "inicio", this.namePresion)
-    this.urlSafePresion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPresion);
+  clickPrecipitacion(index: number) {
+    this.namePrecipitacion = this.fincas[index]
+    this.mapaInicial.set("panel","precipitacion")
+    this.mapaInicial.set("finca",this.namePrecipitacion)
+
+    this.srcPrecipitacion = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+    this.urlSafePrecipitacion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcPrecipitacion);
 
   }
 
   clickHumedad(index: number) {
     this.nameHumedad = this.fincas[index]
-    this.srcHumedad = this.keeper.getEmbeddedUrl("humedad", "inicio", this.nameHumedad)
+    this.mapaInicial.set("panel","humedad")
+    this.mapaInicial.set("finca",this.nameHumedad)
+
+    this.srcHumedad = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
     this.urlSafeHumedad = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHumedad);
   }
 
   clickUV(index: number) {
     this.nameUV = this.fincas[index]
-    this.srcUV = this.keeper.getEmbeddedUrl("uv", "inicio", this.nameUV)
+    this.mapaInicial.set("panel","uv")
+    this.mapaInicial.set("finca",this.nameUV)
+
+    this.srcUV = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
     this.urlSafeUV = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcUV);
   }
 
-
-
   toDetails(finca: string) {
-    this.keeper.setFinca(finca)
+    //this.keeper.setFinca(finca)
   }
 
   generatePDF() {
 
-    let filename = 'reporte-datos-actuales-' + this.keeper.getUsername() + '-cultivo-' + this.cultivo
+    let username: string = this.cookie.getItem("User") as string
+
+    let filename = 'reporte-datos-actuales-' + username + '-cultivo-' + this.cultivo
 
     let listaTexto: Array<string> = []
 
     listaTexto.push("Reporte de datos del cultivo: " + this.cultivo)
-    listaTexto.push("Datos tomados en los últimos 5 minutos")
+    listaTexto.push("Datos tomados en la última hora")
     listaTexto.push("Temperatura en la finca: " + this.nameTemperatura)
-    listaTexto.push("Presión Atmosférica en la finca:" + this.namePresion)
+    listaTexto.push("Precipitacion en la finca:" + this.namePrecipitacion)
     listaTexto.push("Humedad en la finca: " + this.nameHumedad)
     listaTexto.push("Indice UV en la finca: " + this.nameUV)
     
     let listaUrl: Array<string> = []
 
-    listaUrl.push(this.keeper.getEmbeddedUrlRender("temperatura", "inicio", this.nameTemperatura))
-    listaUrl.push(this.keeper.getEmbeddedUrlRender("presion", "inicio", this.namePresion))
-    listaUrl.push(this.keeper.getEmbeddedUrlRender("humedad", "inicio", this.nameHumedad))
-    listaUrl.push(this.keeper.getEmbeddedUrlRender("uv", "inicio", this.nameUV))
+    this.mapaInicial.set("modo","render")
+
+    this.mapaInicial.set("panel","temperatura")
+    this.mapaInicial.set("finca",this.nameTemperatura)
+    listaUrl.push(HttpGrafana.getEmbeddedUrl(this.mapaInicial))
+
+    this.mapaInicial.set("panel","precipitacion")
+    this.mapaInicial.set("finca",this.namePrecipitacion)
+    listaUrl.push(HttpGrafana.getEmbeddedUrl(this.mapaInicial))
+
+    this.mapaInicial.set("panel","humedad")
+    this.mapaInicial.set("finca",this.nameHumedad)
+    listaUrl.push(HttpGrafana.getEmbeddedUrl(this.mapaInicial))
+
+    this.mapaInicial.set("panel","uv")
+    this.mapaInicial.set("finca",this.nameUV)
+    listaUrl.push(HttpGrafana.getEmbeddedUrl(this.mapaInicial))
 
     this.pdf.createPDF(filename, listaTexto,listaUrl)
 

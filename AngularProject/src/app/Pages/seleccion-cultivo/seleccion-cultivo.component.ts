@@ -1,8 +1,8 @@
+import { CultivoService } from './../../Services/Data/cultivo.service';
+import { CookieService } from './../../Services/Storage/cookie.service';
 import { FincaService } from './../../Services/Data/finca.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Keeper } from 'src/app/Resources/Clases/keeper';
-import { SingletonService } from 'src/app/Services/Data/singleton.service';
 import { LoginService } from 'src/app/Services/Sesion/login.service';
 
 @Component({
@@ -16,12 +16,11 @@ import { LoginService } from 'src/app/Services/Sesion/login.service';
 export class SeleccionCultivoComponent implements OnInit {
 
   private link = ['/login'];
-
-  private keeper = new Keeper();
+  private link2 = ['/dashboard/home']
 
   username:string = ""
 
-  cultivos: any = []
+  cultivos: { nombre: any; imagen: string; }[] = []
 
   public selectedTab: "one" | "two";
 	public tabsContentRef!: ElementRef;
@@ -29,22 +28,23 @@ export class SeleccionCultivoComponent implements OnInit {
   constructor(
     private login: LoginService,
     private router: Router,
-    private singleton: SingletonService,
     private finca: FincaService,
+    private cookie: CookieService,
+    private cultivo: CultivoService
 
   ) { 
     this.selectedTab = "one";
   }
 
   ngOnInit(): void {
-    this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
-    this.cultivos = [ ...this.keeper.getCultivos()]
-    this.username = this.keeper.getUsername()
+    this.cultivo.get_cultivos(this.cultivos)
+    this.username = this.cookie.getItem("User") as string
 
   }
 
   clickCultivo(cultivo: string){
-    this.finca.get_fincas(cultivo)
+    this.cookie.setItem("Cultivo",cultivo)
+    this.router.navigate(this.link2);
 
   }
 

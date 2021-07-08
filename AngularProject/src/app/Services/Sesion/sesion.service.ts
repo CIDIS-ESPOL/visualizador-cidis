@@ -22,15 +22,16 @@ export class SesionService {
 
   }
 
-  loginSuccesful(token: string, api_key: string){
+  loginSuccesful(token: string, api_key: string, username: string ,bucket: string){
     this.cookie.setItem("isLoggedIn", "true")
     this.cookie.setItem("Token", token)
     this.cookie.setItem("Api_key", api_key)
+    this.cookie.setItem("User", username)
+    this.cookie.setItem("Bucket",bucket)
   }
 
   logout(){
+    this.cookie.clearAll()
     this.cookie.setItem("isLoggedIn", "false")
-    this.cookie.removeItem("Token")
-    this.cookie.removeItem("Api_key")
   }
 }

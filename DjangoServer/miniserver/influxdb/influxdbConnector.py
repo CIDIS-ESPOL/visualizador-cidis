@@ -10,7 +10,14 @@ client = InfluxDBClient(url="http://localhost:8086", token=token)
 def get_cultivos(bucket):
     try:
         query = f' import "influxdata/influxdb/schema" \
-            schema.measurements(bucket: "{bucket}")'
+                    schema.measurementTagValues( \
+                        bucket: "Tester", \
+                        tag: "planta",\
+                        predicate: (r) => r["_measurement"] == "temperatura" and \
+                        r["usuario"] == "{bucket}", \
+                        start: -30d \
+                        )'
+        
         result = client.query_api().query(query, org=org)
         cultivos = []
         for table in result:
@@ -24,7 +31,14 @@ def get_cultivos(bucket):
 def get_fincas(bucket,cultivo):
     try:
         query = f' import "influxdata/influxdb/schema" \
-             schema.measurementTagValues(bucket: "{bucket}",measurement: "{cultivo}",tag: "finca")'
+                    schema.tagValues( \
+                    bucket: "Tester", \
+                    tag: "finca", \
+                    predicate: (r) => r["_measurement"] == "temperatura" and \
+                    r["usuario"] == "{bucket}", \
+                    r["planta"] == "{cultivo}", \
+                    start: -30d \
+                    )'
         result = client.query_api().query(query, org=org)
         fincas = []
         for table in result:

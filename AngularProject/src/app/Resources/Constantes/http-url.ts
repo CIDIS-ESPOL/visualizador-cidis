@@ -2,7 +2,11 @@ import { HttpHeaders } from '@angular/common/http';
 
 
 export class HttpUrl {
-    static urlGrafana = 'http://localhost:8086/d/'
+
+    static url = 'http://localhost:3000/'
+    static complement = "d-solo/2_cZSKuMz/plantilla?orgId=1&refresh=5s&panelId="
+
+    static urlGrafana = ''
     static urlGrafanaRender = ''
     static urlMiddleware = 'http://localhost:4000/'
 

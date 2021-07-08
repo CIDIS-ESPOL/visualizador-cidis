@@ -1,8 +1,7 @@
+import { FincaService } from './../../../../Services/Data/finca.service';
+import { CookieService } from './../../../../Services/Storage/cookie.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Keeper } from 'src/app/Resources/Clases/keeper';
-import { SingletonService } from 'src/app/Services/Data/singleton.service';
-
 
 @Component({
   selector: 'app-left-menu',
@@ -11,11 +10,12 @@ import { SingletonService } from 'src/app/Services/Data/singleton.service';
 })
 export class LeftMenuComponent implements OnInit {
 
-  keeper: Keeper = new Keeper();
+  
 
   private link = ['/seleccion'];
 
   fincas: Array<string> = []
+  cultivo: string = ""
 
   public isCollapsed = true;
   public isCollapsed2 = true;
@@ -25,21 +25,24 @@ export class LeftMenuComponent implements OnInit {
   username: string = ""
 
   constructor(
-    private singleton: SingletonService,
     private router: Router,
+    private cookie: CookieService,
+    private finca: FincaService,
     ) {}
 
   ngOnInit(): void {
-    this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
-    this.fincas = [ ...this.keeper.getFincas() ];
-    this.username = this.keeper.getUsername()
+    this.cultivo = this.cookie.getItem("Cultivo") as string
+    this.finca.get_fincas(this.cultivo,this.fincas)
+    this.username = this.cookie.getItem("User") as string
+
   }
 
   toDetails(finca: string){
-    this.keeper.setFinca(finca)
+    
   }
 
   goBack(){
+    this.cookie.removeItem("Fincas");
     this.router.navigate(this.link);
   }
 

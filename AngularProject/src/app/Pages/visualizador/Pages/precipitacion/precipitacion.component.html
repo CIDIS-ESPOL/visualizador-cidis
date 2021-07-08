@@ -2,9 +2,10 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Precipitacion - {{ sensor }}</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        <h1 class="h3 mb-0 text-gray-800">Precipitación - {{ finca }}</h1>
+        <a class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
+        (click)="generatePDF()">
+        <i class="fas fa-download fa-sm text-white-50"></i> Generar Reporte</a>
 
     </div>
 
@@ -15,25 +16,12 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Valor Actual</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
+                    <h6 class="m-0 font-weight-bold text-success">Valor Registrado</h6>
+                    
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <iframe [src]="urlSafeInicio" width="450" height="200" frameborder="0"></iframe>
+                    <iframe [src]="urlSafeInicio" width="100%" height="200" frameborder="0"></iframe>
                 </div>
             </div>
 
@@ -44,25 +32,28 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Something</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
+                    <h6 class="m-0 font-weight-bold text-success">Tiempo</h6>
+                    
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    
+                    <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-success" id="dropdownBasic2" ngbDropdownToggle>
+                            Seleccione un tiempo
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                            <button ngbDropdownItem *ngFor="let tiempo of tiempos; index as i;"
+                                (click)="clickTiempo(tiempo)">{{ tiempo }}</button>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <hr>
+                        <p>
+                            Tiempo Seleccionado: <em> {{ tiempoSeleccionado }} </em>
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -77,25 +68,47 @@
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Registro Histórico</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
+                    <h6 class="m-0 font-weight-bold text-success">Registro Histórico</h6>
+                    
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <iframe [src]="urlSafeHistorico" width="100%" height="30%" frameborder="0"></iframe>
+                    <iframe [src]="urlSafeHistorico" width="100%" height="450" frameborder="0"></iframe>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-success">Comparación</h6>
+                    
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-success" id="dropdownBasic2" ngbDropdownToggle>
+                            Seleccione una finca a comparar con la finca {{ finca }}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                            <button ngbDropdownItem *ngFor="let finca of fincas2; index as i;"
+                                (click)="clickFinca(finca)">{{ finca }}</button>
+
+                        </div>
+                    </div>
+                    <div>
+                        <hr>
+                        <iframe [src]="urlSafeComparacion" width="100%" height="450" frameborder="0"></iframe>
+                    </div>
+                    
                 </div>
             </div>
 
@@ -105,4 +118,5 @@
     </div>
 
 </div>
+
 

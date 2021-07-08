@@ -1,10 +1,10 @@
-import { SingletonService } from '../../../../Services/Data/singleton.service';
-import { Keeper } from '../../../../Resources/Clases/keeper';
-
+import { CookieService } from './../../../../Services/Storage/cookie.service';
+import { HttpGrafana } from './../../../../Resources/Constantes/http-grafana';
+import { FincaService } from './../../../../Services/Data/finca.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
 import { Component, OnInit, Input } from '@angular/core';
 import { PDFService } from 'src/app/Services/Transform/pdf.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-humedad',
@@ -15,15 +15,25 @@ export class HumedadComponent implements OnInit {
 
   @Input()
 
-  keeper: Keeper = new Keeper();
-
   tiempos: Array<string> = []
   tiempoSeleccionado: string = ""
 
+  cultivo: string = ""
   finca: string = ""
   finca2: string = ""
 
   fincas2: Array<string> = []
+
+  private mapaInicial = new Map([
+    ["modo","normal"],
+    ["panel","humedad"],
+    ["subpanel","inicio"],
+    ["cultivo",this.cultivo],
+    ["finca",this.finca],
+    ["tiempo",""],
+    ["medida","humedad"],
+    ["finca2",""]
+  ])
 
   srcInicio:string = "";
   srcHistorico:string = "";
@@ -34,27 +44,41 @@ export class HumedadComponent implements OnInit {
   urlSafeComparacion!: SafeResourceUrl;
 
   constructor(
-    private singleton: SingletonService,
     public sanitizer: DomSanitizer,
     private pdf: PDFService,
+    private route: ActivatedRoute,
+    private fincaS: FincaService,
+    private cookie: CookieService,
   ) { }
 
   ngOnInit(): void {
-    this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
-    this.finca = this.keeper.getFinca()
-    let temp = [ ...this.keeper.getFincas() ]
-    temp.forEach((element:any) =>{
-      if(element !== this.finca)
-        this.fincas2.push(element)
-    })
+    
+    let paramsObject: any
 
-    this.tiempos = [ ...this.keeper.getTiempos() ]
+    this.route.paramMap.subscribe(params => {
+        this.cultivo = params.get('cultivo') as string
+    	this.finca = params.get('finca') as string
+    });  
+
+    this.fincaS.get_fincas(this.cultivo,this.fincas2)
+
+    this.tiempos = [ ...HttpGrafana.getTiempos() ]
     this.tiempoSeleccionado = this.tiempos[0]
     this.finca2 = this.fincas2[0]
 
-    this.srcInicio = this.keeper.getEmbeddedUrl("humedad","inicio",this.finca)
-    this.srcHistorico = this.keeper.getEmbeddedUrl("humedad","historico",this.finca)
-    this.srcComparacion = this.keeper.getEmbeddedUrlByTimeComparacion("humedad","comparacion",this.tiempoSeleccionado,this.fincas2[0]);
+    this.mapaInicial.set("cultivo",this.cultivo)
+    this.mapaInicial.set("finca",this.finca)
+
+    this.srcInicio = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+
+    this.mapaInicial.set("subpanel","historico")
+    this.srcHistorico = HttpGrafana.getEmbeddedUrl(this.mapaInicial)
+
+    this.mapaInicial.set("panel","comparacion")
+    this.mapaInicial.set("subpanel","inicio")
+    this.mapaInicial.set("tiempo",this.tiempoSeleccionado)
+    this.mapaInicial.set("finca2",this.finca2)
+    this.srcComparacion =  HttpGrafana.getEmbeddedUrlByTimeComparacion(this.mapaInicial)
 
     this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcInicio);
     this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcHistorico);
@@ -63,25 +87,38 @@ export class HumedadComponent implements OnInit {
 
   clickTiempo(tiempo: string): void{
     this.tiempoSeleccionado = tiempo
-    this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("humedad","inicio",tiempo));
-    this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(this.keeper.getEmbeddedUrlByTime("humedad","historico",tiempo));
-    this.srcComparacion = this.keeper.getEmbeddedUrlByTimeComparacion("humedad","comparacion",tiempo,this.finca2);
-    this.urlSafeComparacion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcComparacion);
+    this.mapaInicial.set("tiempo",this.tiempoSeleccionado)
+
+    this.mapaInicial.set("panel","humedad")
+    this.mapaInicial.set("subpanel","inicio")
+    this.urlSafeInicio = this.sanitizer.bypassSecurityTrustResourceUrl(HttpGrafana.getEmbeddedUrlByTime(this.mapaInicial));
+
+    this.mapaInicial.set("subpanel","historico")
+    this.urlSafeHistorico = this.sanitizer.bypassSecurityTrustResourceUrl(HttpGrafana.getEmbeddedUrlByTime(this.mapaInicial));
+    
+    this.mapaInicial.set("panel","comparacion")
+    this.mapaInicial.set("subpanel","inicio")
+    this.mapaInicial.set("tiempo",this.tiempoSeleccionado)
+    this.urlSafeComparacion = this.sanitizer.bypassSecurityTrustResourceUrl(HttpGrafana.getEmbeddedUrlByTimeComparacion(this.mapaInicial));
   }
 
   clickFinca(finca: string): void{
     this.finca2 = finca
-    this.srcComparacion = this.keeper.getEmbeddedUrlByTimeComparacion("humedad","comparacion",this.tiempoSeleccionado,finca);
-    this.urlSafeComparacion = this.sanitizer.bypassSecurityTrustResourceUrl(this.srcComparacion);
+    this.mapaInicial.set("panel","comparacion")
+    this.mapaInicial.set("subpanel","inicio")
+    this.mapaInicial.set("finca2",this.finca2)
+    this.urlSafeComparacion = this.sanitizer.bypassSecurityTrustResourceUrl(HttpGrafana.getEmbeddedUrlByTimeComparacion(this.mapaInicial));
   }
 
   generatePDF() {
 
-    let filename = 'reporte-detallado-humedad-' + this.keeper.getUsername() + '-cultivo-' + this.keeper.getCultivo()
+    let username: string = this.cookie.getItem("User") as string
+
+    let filename = 'reporte-detallado-humedad-' + username + '-cultivo-' + this.cultivo
 
     let listaTexto: Array<string> = []
 
-    listaTexto.push("Reporte detallado del nivel de humedad del cultivo: " + this.keeper.getCultivo())
+    listaTexto.push("Reporte detallado del nivel de humedad del cultivo: " + this.cultivo)
     listaTexto.push("Datos tomados en el tiempo: " + this.tiempoSeleccionado + " en la finca: " + this.finca)
     listaTexto.push("Nivel de Humedad Promedio: ")
     listaTexto.push("Registro Histórico: ")
@@ -89,9 +126,16 @@ export class HumedadComponent implements OnInit {
     
     let listaUrl: Array<string> = []
 
-    listaUrl.push(this.keeper.getEmbeddedUrlByTimeRender("humedad","inicio",this.tiempoSeleccionado))
-    listaUrl.push(this.keeper.getEmbeddedUrlByTimeRender("humedad","historico",this.tiempoSeleccionado))
-    listaUrl.push(this.keeper.getEmbeddedUrlByTimeComparacionRender("humedad","comparacion",this.tiempoSeleccionado,this.finca2))
+    this.mapaInicial.set("panel","humedad")
+    this.mapaInicial.set("subpanel","inicio")
+    listaUrl.push(HttpGrafana.getEmbeddedUrlByTime(this.mapaInicial))
+
+    this.mapaInicial.set("subpanel","historico")
+    listaUrl.push(HttpGrafana.getEmbeddedUrlByTime(this.mapaInicial))
+    
+    this.mapaInicial.set("panel","comparacion")
+    this.mapaInicial.set("subpanel","inicio")
+    listaUrl.push(HttpGrafana.getEmbeddedUrlByTimeComparacion(this.mapaInicial))
 
     this.pdf.createPDF(filename, listaTexto,listaUrl)
 

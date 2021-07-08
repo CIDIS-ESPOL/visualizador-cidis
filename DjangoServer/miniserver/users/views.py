@@ -64,12 +64,14 @@ def login(request):
 
     serializer = ObtainAuthToken.serializer_class(
         data=data, context={'request': request})
+        
     
     if serializer.is_valid():
         user = serializer.validated_data['user']
         usuario = Usuario.objects.get(user=user)
         token, created = Token.objects.get_or_create(user=user) 
         data = {
+            "message": 'Logged In',
             "username": usuario.user.username,
             "bucket": usuario.bucket_name,
             'Auth-token': token.key,

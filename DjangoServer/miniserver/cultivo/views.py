@@ -38,3 +38,14 @@ def cultivos(request):
             'error':'Permission Denied!'
         }
     return Response(msg,status=status.HTTP_403_FORBIDDEN)
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def cultivo(request):
+    planta = request.data.get('cultivo')
+    data = generics.get_object_or_404(Cultivo,nombre=planta)
+    if data is not None:
+        serializer = CultivoSerializer(data, many=False)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    return Response({'message': 'Cultivo no existe'},status=status.HTTP_400_BAD_REQUEST)

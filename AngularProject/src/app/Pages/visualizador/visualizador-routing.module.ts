@@ -1,3 +1,4 @@
+import { PrecipitacionComponent } from './Pages/precipitacion/precipitacion.component';
 import { UvComponent } from './Pages/uv/uv.component';
 import { PresionComponent } from './Pages/presion/presion.component';
 import { HumedadComponent } from './Pages/humedad/humedad.component';
@@ -16,16 +17,16 @@ const routes: Routes = [
         path: "", component: HomeComponent, outlet: "home"
       },
       {
-        path: "temperatura", component: TemperaturaComponent, outlet: "home"
+        path: "temperatura/:cultivo/:finca", component: TemperaturaComponent, outlet: "home"
       },
       {
-        path: "presion", component: PresionComponent, outlet: "home"
+        path: "precipitacion/:cultivo/:finca", component: PrecipitacionComponent, outlet: "home"
       },
       {
-        path: "uv", component: UvComponent, outlet: "home"
+        path: "uv/:cultivo/:finca", component: UvComponent, outlet: "home"
       },
       {
-        path: "humedad", component: HumedadComponent, outlet: "home"
+        path: "humedad/:cultivo/:finca", component: HumedadComponent, outlet: "home"
       }
         
     ]

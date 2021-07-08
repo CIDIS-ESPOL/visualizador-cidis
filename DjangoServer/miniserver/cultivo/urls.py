@@ -6,6 +6,7 @@ from . import views
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
    path('getCultivos', views.cultivos),
+   path('getCultivo',views.cultivo)
 ]
 router = routers.DefaultRouter()
 router.register('cultivos',views.CultivoViewSet,'cultivos')

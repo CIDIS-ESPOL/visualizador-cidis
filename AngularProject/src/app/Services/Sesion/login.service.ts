@@ -1,5 +1,4 @@
 import { CultivoService } from './../Data/cultivo.service';
-import { GrafanaConfigService } from './../Data/grafana-config.service';
 import { HttpUrl } from './../../Resources/Constantes/http-url';
 import { HttpRequestService } from './../HTTP/http-request.service';
 import { HttpHeaders } from '@angular/common/http';
@@ -20,8 +19,7 @@ export class LoginService {
   constructor(
     private session: SesionService,
     private http: HttpRequestService,
-    private grafana_config: GrafanaConfigService,
-    private cultivo: CultivoService,
+    private router: Router
     ) { }
 
   async login(username: string, password: string){
@@ -48,24 +46,18 @@ export class LoginService {
     .then( (result) => {
       let response: any = result
 
-      this.session.loginSuccesful(response["Auth-token"], response.apikey)
-
-      this.grafana_config.get_config(response["username"])
-
-      this.cultivo.get_cultivos(response["bucket"])
-      /*
-      console.log(response.message)
-      
       if(response.message === 'Logged In'){
-        console.log(response.token)
+        console.log(response["Auth-token"])
         console.log(response.apikey)
-        this.session.loginSuccesful(response.token, response.apikey)
+        this.session.loginSuccesful(response["Auth-token"], response.apikey, response["username"],response["bucket"])
         let currentUrl = this.router.url;
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate([currentUrl]);
         });
-        return true
+
       }
+      /*
+      console.log(response.message)
       */
     })
     .catch(error=>{

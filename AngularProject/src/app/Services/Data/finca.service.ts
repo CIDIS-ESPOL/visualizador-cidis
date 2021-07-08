@@ -1,63 +1,79 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Keeper } from 'src/app/Resources/Clases/keeper';
 import { HttpUrl } from 'src/app/Resources/Constantes/http-url';
 import { HttpRequestService } from '../HTTP/http-request.service';
 import { CookieService } from '../Storage/cookie.service';
-import { SingletonService } from './singleton.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FincaService {
 
-  private keeper = new Keeper()
-
-  private link = ['/dashboard/home'];
-
   constructor(
     private http: HttpRequestService,
     private cookie: CookieService,
-    private singleton: SingletonService,
-    private router: Router,
   ) { }
 
-  get_fincas(cultivo: string) {
+  get_fincas(cultivo: string, fincas: string[]) {
 
-    this.singleton.currentObject.subscribe(objectSource => this.keeper = objectSource);
+    let values = this.cookie.getItem("Fincas")
+    
+    console.log(values)
 
-    let bucket = this.keeper.getBucket()
+    if (values !== undefined) {
+    
+    	if(values.length > 11){
+    		let object = JSON.parse(values)
 
-    this.keeper.setCultivo(cultivo)
+      object["data"].forEach((element: string) => {
+        fincas.push(element)
+      });
+    }
+    }else {
+      let bucket = this.cookie.getItem("Bucket")
 
-    let token = this.cookie.getItem('Token')
+      let token = this.cookie.getItem('Token')
 
-    let data = {
-      bucket: bucket,
-      cultivo: cultivo
+      let data = {
+        bucket: bucket,
+        cultivo: cultivo
+      }
+
+      let httpOptionsRest = {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json",
+          "Authorization": "Token " + token
+        })
+      };
+
+      this.http.post(HttpUrl.url_fincas, data, httpOptionsRest)
+        .then(result => {
+          let response: any = result
+          
+          console.log(response.fincas)
+
+          response.fincas.forEach((element: any) => {
+            fincas.push(element)
+          });
+
+          let temp = {
+            data: fincas
+          }
+
+          this.cookie.setItem("Fincas", JSON.stringify(temp));
+
+
+        })
+        .catch(error => {
+          console.log(error)
+          alert('Hubo un problema al enviar solicitud')
+        })
     }
 
-    let httpOptionsRest = {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json",
-        "Authorization": "Token " + token
-      })
-    };
+    
 
-    this.http.post(HttpUrl.url_fincas,data,httpOptionsRest)
-    .then(result => {
-      let response:any = result
 
-      this.keeper.setFincas(response["fincas"])
-      this.keeper.setFinca(response["fincas"][0])
-     
-      this.router.navigate(this.link);
-    })
-    .catch(error => {
-      console.log(error)
-      alert('Hubo un problema al enviar solicitud')
-    })
 
     /*
     

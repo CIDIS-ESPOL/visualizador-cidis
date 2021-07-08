@@ -6,242 +6,156 @@
         <h1 class="h3 mb-0 text-gray-800">Visualizando datos del cultivo - {{ cultivo }}</h1>
         <a class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
         (click)="generatePDF()">
-        <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        <i class="fas fa-download fa-sm text-white-50"></i> Generar Reporte</a>
 
     </div>
-
+    
     <div class="row">
 
         <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-12 col-lg-12">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Temperatura</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <iframe [src]="urlSafeTemperatura" width="450" height="200" frameborder="0"></iframe>
-                </div>
-            </div>
+                    <h6 class="m-0 font-weight-bold text-success">Mapa de sensores</h6>
+                    <div>
+                    	<div ngbDropdown class="d-inline-block mr-1">
+                        <button class="btn btn-outline-success" id="dropdownBasic1" ngbDropdownToggle>
+                            Seleccione una medida
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem *ngFor="let medida of medidas; index as i;"
+                                (click)="clickMapaByMedida(i)">{{ medida }}</button>
 
-
-        </div>
-
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Fincas</h6>
-                    <!--
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </div>
-                    -->
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-
                     <div ngbDropdown class="d-inline-block">
                         <button class="btn btn-outline-success" id="dropdownBasic1" ngbDropdownToggle>
                             Seleccione una finca
                         </button>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
                             <button ngbDropdownItem *ngFor="let finca of fincas; index as i;"
-                                (click)="clickTemperatura(i)">{{ finca }}</button>
+                                (click)="clickMapaByFinca(i)">{{ finca }}</button>
 
                         </div>
                     </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <iframe [src]="urlSafeMapa" width="100%" height="450" frameborder="0"></iframe>
+                </div>
+            </div>
 
-                    <div>
-                        <hr>
-                        <p>
-                            Finca Seleccionada: <em> {{ nameTemperatura }} </em>
-                        </p>
-                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'temperatura'}}]"
+
+        </div>
+        
+    </div>
+
+     <!-- Page Heading -->
+     <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-3">
+        <h1 class="h3 mb-0 text-gray-800">Datos Ambientales en la finca {{ nameFinca }}</h1>
+        <div ngbDropdown class="d-inline-block">
+            <button class="btn btn-outline-success" id="dropdownBasic1" ngbDropdownToggle>
+                Seleccione una finca
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <button ngbDropdownItem *ngFor="let finca of fincas; index as i;"
+                    (click)="clickFinca(i)">{{ finca }}</button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-success">Temperatura</h6>
+                    <a [routerLink]="['/dashboard/home',{outlets:{'home': ['temperatura',cultivo,nameFinca]}}]"
                             routerLinkActive="active" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
                             (click)="toDetails(nameTemperatura)">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>
-                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <iframe [src]="urlSafeTemperatura" width="100%" height="200" frameborder="0"></iframe>
                 </div>
             </div>
 
+
         </div>
-
-    </div>
-
-    <div class="row">
-
+        <!---->
+        
         <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Presión Atmósferica</h6>
-
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <iframe [src]="urlSafePresion" width="450" height="200" frameborder="0"></iframe>
-                </div>
-            </div>
-
-
-        </div>
-
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Fincas</h6>
-
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-outline-success" id="dropdownBasic2" ngbDropdownToggle>
-                            Seleccione una finca
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-                            <button ngbDropdownItem *ngFor="let finca of fincas; index as i;"
-                                (click)="clickPresion(i)">{{ finca }}</button>
-
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <hr>
-                        <p>
-                            Finca Seleccionada: <em> {{ namePresion }} </em>
-                        </p>
-                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'presion'}}]" routerLinkActive="active"
-                            (click)="toDetails(namePresion)"
-                            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                    <h6 class="m-0 font-weight-bold text-success">Precipitacion</h6>
+                    <a [routerLink]="['/dashboard/home',{outlets:{'home': ['precipitacion',cultivo,nameFinca]}}]"
+                            routerLinkActive="active" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
+                            (click)="toDetails(nameTemperatura)">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>
-                    </div>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <iframe [src]="urlSafePrecipitacion" width="100%" height="200" frameborder="0"></iframe>
                 </div>
             </div>
 
+
         </div>
+        
 
     </div>
 
+    
     <div class="row">
 
         <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-success">Humedad</h6>
-
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <iframe [src]="urlSafeHumedad" width="450" height="200" frameborder="0"></iframe>
-                </div>
-            </div>
-
-
-        </div>
-
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Fincas</h6>
-
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-outline-success" id="dropdownBasic3" ngbDropdownToggle>
-                            Seleccione una finca
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
-                            <button ngbDropdownItem *ngFor="let finca of fincas; index as i;"
-                                (click)="clickHumedad(i)">{{ finca }}</button>
-
-                        </div>
-                    </div>
-
-                    <div>
-                        <hr>
-                        <p>
-                            Finca Seleccionada: <em> {{ nameHumedad }} </em>
-                        </p>
-                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'humedad'}}]" routerLinkActive="active"
-                            (click)="toDetails(nameHumedad)"
-                            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+                    <a [routerLink]="['/dashboard/home',{outlets:{'home': ['humedad',cultivo,nameFinca]}}]"
+                            routerLinkActive="active" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
+                            (click)="toDetails(nameTemperatura)">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>
-                    </div>
-                </div>
-            </div>
 
-        </div>
-
-    </div>
-
-    <div class="row">
-
-        <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Indice UV</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <iframe [src]="urlSafeUV" width="450" height="200" frameborder="0"></iframe>
+                    <iframe [src]="urlSafeHumedad" width="100%" height="200" frameborder="0"></iframe>
                 </div>
             </div>
 
 
         </div>
 
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-success">Fincas</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-outline-success" id="dropdownBasic4" ngbDropdownToggle>
-                            Seleccione una finca
-                        </button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownBasic4">
-                            <button ngbDropdownItem *ngFor="let finca of fincas; index as i;"
-                                (click)="clickUV(i)">{{ finca }}</button>
-
-                        </div>
-                    </div>
-                   
-                    <div>
-                        <hr>
-                        <p>
-                            Finca Seleccionada: <em> {{ nameUV }} </em>
-                        </p>
-                        <a [routerLink]="['/dashboard/home',{outlets:{'home': 'uv'}}]" routerLinkActive="active"
-                            (click)="toDetails(nameUV)"
-                            class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm">
+       <!-- Area Chart -->
+       <div class="col-xl-6 col-lg-6">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-success">Indice UV</h6>
+                <a [routerLink]="['/dashboard/home',{outlets:{'home': ['uv',cultivo,nameFinca]}}]"
+                            routerLinkActive="active" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"
+                            (click)="toDetails(nameTemperatura)">
                             Ver más detalles <i class="fas fa-angle-double-right"></i> </a>
-                    </div>
-                </div>
             </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <iframe [src]="urlSafeUV" width="100%" height="200" frameborder="0"></iframe>
+            </div>
+        </div>
+
 
         </div>
 

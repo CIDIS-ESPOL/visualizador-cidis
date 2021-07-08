@@ -57,7 +57,9 @@ from cultivo.serializers import CultivoSerializer
 def get_cultivos(request):
     if request.user.is_authenticated:
         bucket = request.data.get("bucket")
+        
         result = influxdbConnector.get_cultivos(bucket)
+        
 
         if result is not None:
             cultivos = Cultivo.objects.filter(nombre__in=result)

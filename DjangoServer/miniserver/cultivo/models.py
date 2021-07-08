@@ -13,6 +13,17 @@ def get_upload_to_cultivo(instance, filename):
 class Cultivo(models.Model):
     nombre = models.CharField(max_length=200)
     imagen = models.ImageField(null=True,blank=True,upload_to=get_upload_to_cultivo)
+    minimo_temperatura = models.FloatField(blank=True,default=0)
+    maximo_temperatura = models.FloatField(blank=True,default=0)
+
+    minimo_humedad = models.FloatField(blank=True,default=0)
+    maximo_humedad = models.FloatField(blank=True,default=0)
+
+    minimo_precipitacion = models.FloatField(blank=True,default=0)
+    maximo_precipitacion = models.FloatField(blank=True,default=0)
+
+    minimo_radiacion = models.FloatField(blank=True,default=0)
+    maximo_radiacion = models.FloatField(blank=True,default=0)
 
     class CultivoForm(ModelForm):
         class Meta:

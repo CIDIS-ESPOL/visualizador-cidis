@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-success sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-success sidebar sidebar-dark accordion" id="accordionSidebar" height="100%">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center">
@@ -46,9 +46,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Fincas:</h6>
                 <a class="collapse-item" 
-                [routerLink]="['/dashboard/home',{outlets:{'home': 'temperatura'}}]" routerLinkActive="active"
                 *ngFor="let finca of fincas; index as i;"
-                (click)="toDetails(finca)">{{finca}}</a>
+                [routerLink]="['/dashboard/home',{outlets:{'home': ['temperatura',cultivo,finca]}}]" routerLinkActive="active"
+                >{{finca}}</a>
             </div>
         </div>
     </li>
@@ -61,16 +61,16 @@
             data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="wi wi-fw wi-barometer"></i>
-            <span>Presión Atmosférica</span>
+            <span>precipitacion</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar"
             #collapse2="ngbCollapse" [(ngbCollapse)]="isCollapsed2">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Fincas:</h6>
                 <a class="collapse-item" 
-                [routerLink]="['/dashboard/home',{outlets:{'home': 'presion'}}]" routerLinkActive="active" 
                 *ngFor="let finca of fincas; index as i;"
-                (click)="toDetails(finca)">{{finca}}</a>
+                [routerLink]="['/dashboard/home',{outlets:{'home': ['precipitacion',cultivo,finca]}}]" routerLinkActive="active" 
+                >{{finca}}</a>
             </div>
         </div>
     </li>
@@ -91,9 +91,9 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Fincas:</h6>
                 <a class="collapse-item" 
-                [routerLink]="['/dashboard/home',{outlets:{'home': 'humedad'}}]" routerLinkActive="active"
                 *ngFor="let finca of fincas; index as i;"
-                (click)="toDetails(finca)">{{finca}}</a>
+                [routerLink]="['/dashboard/home',{outlets:{'home': ['humedad',cultivo,finca]}}]" routerLinkActive="active"
+                >{{finca}}</a>
             </div>
         </div>
     </li>
@@ -113,10 +113,10 @@
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Fincas:</h6>
-                <a class="collapse-item" 
-                [routerLink]="['/dashboard/home',{outlets:{'home': 'uv'}}]" routerLinkActive="active"
-                *ngFor="let finca of fincas; index as i;"
-                (click)="toDetails(finca)">{{finca}}</a>
+                <a class="collapse-item"
+                *ngFor="let finca of fincas; index as i;" 
+                [routerLink]="['/dashboard/home',{outlets:{'home': ['uv',cultivo,finca]}}]" routerLinkActive="active"
+                >{{finca}}</a>
             </div>
         </div>
     </li>

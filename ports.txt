@@ -24,3 +24,7 @@ Grafana
 user: admin
 password: c1d1sESPOL2021
 api-key: eyJrIjoiTlNzU1FqNzUzMjVNRmFReEp4dm95dzVpcklCRmhVbDEiLCJuIjoiV2ViIEFQSSIsImlkIjoxfQ==
+
+Django
+user: CIDIS-ESPOL
+pass: c1d1sESPOL2021
