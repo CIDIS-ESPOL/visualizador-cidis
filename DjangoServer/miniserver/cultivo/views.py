@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 
@@ -24,6 +25,7 @@ class CultivoViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     serializer_class = CultivoSerializer
 
+
 # Create your views here.
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
@@ -49,3 +51,5 @@ def cultivo(request):
         serializer = CultivoSerializer(data, many=False)
         return Response(serializer.data,status=status.HTTP_200_OK)
     return Response({'message': 'Cultivo no existe'},status=status.HTTP_400_BAD_REQUEST)
+
+

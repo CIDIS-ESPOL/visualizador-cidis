@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     
     this.cultivo = this.cookie.getItem("Cultivo") as string
-    this.finca.get_fincas(this.cultivo,this.fincas)
+    this.finca.get_fincas(this.fincas)
 
     this.nameFinca = this.nameTemperatura = this.namePrecipitacion = this.nameUV = this.nameHumedad = this.fincas[0];
 

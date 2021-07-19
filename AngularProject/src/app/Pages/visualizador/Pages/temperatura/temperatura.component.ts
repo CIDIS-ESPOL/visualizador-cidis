@@ -64,7 +64,7 @@ export class TemperaturaComponent implements OnInit {
     console.log(this.cultivo)
     console.log(this.finca)
 
-    this.fincaS.get_fincas(this.cultivo,this.fincas2)
+    this.fincaS.get_fincas(this.fincas2)
 
     this.tiempos = [ ...HttpGrafana.getTiempos() ]
     this.tiempoSeleccionado = this.tiempos[0]

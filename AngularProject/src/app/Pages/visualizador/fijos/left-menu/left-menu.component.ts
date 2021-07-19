@@ -32,7 +32,7 @@ export class LeftMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.cultivo = this.cookie.getItem("Cultivo") as string
-    this.finca.get_fincas(this.cultivo,this.fincas)
+    this.finca.get_fincas(this.fincas)
     this.username = this.cookie.getItem("User") as string
 
   }

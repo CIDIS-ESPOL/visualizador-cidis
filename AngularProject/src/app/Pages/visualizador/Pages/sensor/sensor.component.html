@@ -1,0 +1,309 @@
+<!-- Begin Page Content -->
+<div class="container-fluid" id="htmlData">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Listado de Sensores</h1>
+    <button type="button" class="btn btn-outline-success mr-2" (click)="openCrear(content)">
+      + Añadir Sensor
+    </button>
+  </div>
+
+  <div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-12 col-lg-12">
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID Sensor</th>
+            <th scope="col">Cultivo</th>
+            <th scope="col">Finca</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sensor of sensores; index as i;">
+            <th scope="row"> {{ (i + 1) }} </th>
+            <td>{{ sensor.id }}</td>
+            <td>{{ sensor.cultivo }}</td>
+            <td>{{ sensor.finca }}</td>
+            <td>
+              <button type="button" class="btn btn-outline-success mr-2" 
+              (click)="openEdicion(content,sensor)">
+                Editar
+              </button>
+              <button type="button" class="btn btn-outline-danger"
+              (click)="eliminarSensor(sensor)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h3 class="text-success">{{title}}</h3>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        <div class="card">
+
+          <div class="card-body">
+            <div class="form-group">
+              <label for="id">Id</label>
+              <label class="d-block">
+                <input type="text" class="form-control" formControlName="id" 
+                autocomplete="id" [placeholder]="'Escriba aquí el id del nuevo sensor'"
+                [readOnly]="active"/>
+                <span hidden translate>Id</span>
+              <small
+                [hidden]="checkoutForm.controls.id.untouched || active"
+                class="text-danger"
+                translate
+              >
+                El id del sensor es necesario
+              </small>
+              </label>
+            </div>
+            <div class="form-group float-left">
+              <label for="id">Cultivo:</label>
+              <label class="d-block">
+                <select class="form-select" id="cultivos" name="cultivos" size="1" formControlName="cultivo">
+                  <option *ngFor="let cultivo of cultivos; index as i;" value="{{cultivo.nombre}}">
+                    {{ cultivo.nombre }}
+                  </option>
+                </select>
+              </label>
+
+            </div>
+            <div class="form-group float-right">
+              <label for="id">Fincas: </label>
+              <label class="d-block">
+                <select class="form-select" id="fincas" name="fincas" size="1" formControlName="finca">
+                  <option *ngFor="let finca of fincas; index as i;" value="{{ finca }}">
+                    {{ finca }}
+                  </option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-success" (click)="onSubmit();modal.close('Save click')">
+      Guardar
+    </button>
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Save click')">
+      Cancelar
+    </button>
+  </div>
+</ng-template>
+
+<!--
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="cultivos">Cultivos: </label>
+        <select id="cultivos" name="cultivos" size="1" formControlName="cultivo">
+          <option *ngFor="let cultivo of cultivos; index as i;" value="{{cultivo.nombre}}">
+            {{ cultivo.nombre }}
+          </option>
+        </select>
+
+      </div>
+      <div class="form-group">
+        <label for="fincas">Fincas: </label>
+        <select id="fincas" name="fincas" size="1" formControlName="finca">
+          <option *ngFor="let finca of fincas; index as i;" value="{{ finca }}">
+            {{ finca }}
+          </option>
+        </select>
+
+      </div>
+      
+    </form>
+-->
+
+<!--
+  <div class="container-fluid">
+    
+    <form [formGroup]="entryForm" novalidate>
+      <div class="card">
+        <div class="card-header">
+          <div class="float-left"><h3 class="text-info">Position</h3></div>
+          <div class="float-right">
+            
+            <h5 class="text-warning font-italic">{{ formMode }}</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-danger" [hidden]="!error" translate>
+            Position Number, Title, Description or Salary incorrect.
+          </div>
+          <div class="form-group">
+            <label for="id">Id</label>
+            <label class="d-block">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="id"
+                autocomplete="id"
+                [placeholder]="'Auto Assigned Id' | translate"
+                readonly
+              />
+              <span hidden translate>Id</span>
+              <small
+                [hidden]="entryForm.controls.id.valid || entryForm.controls.id.untouched"
+                class="text-danger"
+                translate
+              >
+                Id is required
+              </small>
+            </label>
+
+            <label for="positionNumber">Position Number</label>
+            <label class="d-block">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="positionNumber"
+                autocomplete="positionNumber"
+                [placeholder]="'Enter position number here' | translate"
+                required
+              />
+              <span hidden translate>PositionNumber</span>
+              <small
+                [hidden]="entryForm.controls.positionNumber.valid || entryForm.controls.positionNumber.untouched"
+                class="text-danger"
+                translate
+              >
+                Position Number is required
+              </small>
+            </label>
+            <label for="positionTitle">Position Title</label>
+
+            <label class="d-block">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="positionTitle"
+                autocomplete="current-positionTitle"
+                [placeholder]="'Enter title here' | translate"
+                required
+              />
+              <span hidden translate>PositionTitle</span>
+              <small
+                [hidden]="entryForm.controls.positionTitle.valid || entryForm.controls.positionTitle.untouched"
+                class="text-danger"
+                translate
+              >
+                Position Title is required
+              </small>
+            </label>
+            <label for="positionDescription">Position Description</label>
+
+            <label class="d-block">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="positionDescription"
+                autocomplete="current-positionDescription"
+                [placeholder]="'Enter description here' | translate"
+                required
+              />
+              <span hidden translate>PositionDescription</span>
+              <small
+                [hidden]="
+                  entryForm.controls.positionDescription.valid || entryForm.controls.positionDescription.untouched
+                "
+                class="text-danger"
+                translate
+              >
+                Position Description is required
+              </small>
+            </label>
+            <label for="positionSalary">Position Salary</label>
+
+            <label class="d-block">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="positionSalary"
+                autocomplete="current-positionSalary"
+                [placeholder]="'Enter salary here' | translate"
+                required
+              />
+              <span hidden translate>PositionDescription</span>
+              <small
+                [hidden]="entryForm.controls.positionSalary.valid || entryForm.controls.positionSalary.untouched"
+                class="text-danger"
+                translate
+              >
+                Position Salary is required and must be numeric
+              </small>
+            </label>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="float-left">
+            
+            <button
+              (click)="onCreate()"
+              class="btn btn-primary w-20"
+              type="submit"
+              [disabled]="entryForm.invalid || !isAddNew"
+              *ngIf="this.isAddNew"
+            >
+              <span translate><i class="fas fa-plus"></i> Create</span>
+            </button>
+            
+            <button
+              (click)="onUpdate(entryForm)"
+              class="btn btn-primary w-20"
+              type="submit"
+              [disabled]="entryForm.invalid || isAddNew"
+              *ngIf="!this.isAddNew"
+            >
+              <span translate><i class="fas fa-edit"></i> Update</span>
+            </button>
+            
+            <button
+              (click)="onDelee()"
+              class="btn btn-danger w-20"
+              type="submit"
+              [disabled]="entryForm.invalid || isAddNew"
+              *ngIf="!this.isAddNew"
+            >
+              <span translate><i class="fas fa-trash-alt"></i> Delete</span>
+            </button>
+          </div>
+          <div class="float-right">
+            
+            <button (click)="onCancel()" class="btn btn-secondary w-20" type="submit">
+              <span translate><i class="fa fa-arrow-left"></i> Cancel</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+-->

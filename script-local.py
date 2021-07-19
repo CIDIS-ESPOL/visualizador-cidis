@@ -19,49 +19,38 @@ client = InfluxDBClient(url="http://localhost:8086", token=token)
 
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
-user = "Prueba"
-
 '''
 aduino = serial.Serial('/dev/ttyUSB0',9600)
 arduino.flushInput()
 '''
 
-cultivos = ["maiz", "papa", "cebolla", "tomate"]
-
-
 df = pd.read_csv("data.csv",sep=';')
 
-sensores = [
-	"SensorA",
-	"SensorB",
-	"SensorC",
-	"SensorD",
-	"SensorE"
-]
+id = "TEST-0000001"
 
-coordenadas = {
-	"SensorA": [-2.0592336490950363, -79.9100491057847],
-	"SensorB": [-2.060992040923297, -79.8947712436248],
-	"SensorC": [-2.0691835479639873, -79.90987744441212],
-	"SensorD": [-2.069312210041173, -79.9185892590707],
-	"SensorE": [-2.052500277094427, -79.90361180431282]
-}
+response =requests.get('http://localhost:4000/info/sensor/raspberry/' + id)
+datos = json.loads(response.content.decode())
 
-fincas = [
-	"ESPOL",
-	"La Gloria",
-	"Teresita",
-	"Jesús, el Gran Poder",
-	"El Manaba"
-]
+cultivo = datos['cultivo']
+finca = datos['finca']
+user = datos['user']
 
-cultivo = "cebolla"
+response =requests.get('http://localhost:4000/info/sensor/getsensoresR/' + cultivo + '/' + finca + '/' + user)
+datos = json.loads(response.content.decode())
+
+sensores = {}
+
+nombre_sensores = []
+
+for sensor in datos:
+	sensores[sensor['id']] = [sensor['latitud'],sensor['longitud']]
+	nombre_sensores.append(sensor['id'])
 
 data = {
 	"cultivo": cultivo
 }
 
-response =requests.get('http://localhost:4000/info/getCultivo',data=data)
+response =requests.get('http://localhost:4000/info/cultivo/getCultivo',data=data)
 datos = json.loads(response.content.decode())
 
 minimo_temperatura = datos["minimo_temperatura"]
@@ -83,11 +72,11 @@ while True:
 		for d in range(len(df)):
 			print("Activo, leyendo linea #"+str((d+1))+"...")
 			#name = str(df["nombre"][d]).replace(" ", "")
-			name = sensores[random.randint(0,4)]
-			latitud = coordenadas[name][0]
-			longitud = coordenadas[name][1]
+			numero = random.randint(0,len(nombre_sensores) - 1)
+			name = nombre_sensores[numero]
+			latitud = sensores[name][0]
+			longitud = sensores[name][1]
 			#planta = cultivos[random.randint(0,3)]
-			finca = fincas[random.randint(0,4)]
 			temperatura = df["temperatura"][d]
 			#temperatura = words[1].replace(",","")
 			precipitacion = (random.random() * 10)
@@ -157,45 +146,3 @@ while True:
 	
 	
     
-
-
-'''
-for d in range(len(df)):
-        print("Activo, leyendo linea #"+str((d+1))+"...")
-        name = str(df["nombre"][d]).replace(" ", "")
-        latitud = coordenadas[name][0]
-        longitud = coordenadas[name][1]
-        linea = "central" + ",sensor="+ name + " " + "temperatura=" + str(df["temperatura"][d]) + "," + "humedad=" + str(df["humedad"][d]) + "," + "ph=" + str(df["ph"][d]) + "," + "precipitacion=" + str(df["precipitacion"][d]) + "," + "latitud=" + str(latitud) + "," + "longitud=" + str(longitud) + " " + str(time_ns())
-        print(linea)
-        write_api.write(bucket, org, linea)
-        print("A dormir por" + str(tiempo) + " segundos")
-        sleep(tiempo)
-
-
-lines = ["price"
-         + ",type=BTC"
-         + " "
-         + "close=" + str(df["close"][d]) + ","
-         + "high=" + str(df["high"][d]) + ","
-         + "low=" + str(df["low"][d]) + ","
-         + "open=" + str(df["open"][d]) + ","
-         + "volume=" + str(df["volume"][d])
-         + " " + str(time_ns()) for d in range(len(df))]
-
-write_api.write(bucket, org, lines)
-'''
-
-'''
-		datosBytes = arduino.readline()
-		datos = datosBytes.decode('latin-1').strip()
-		words = datos.split()
-		'''
-
-'''
-			linea = planta + ",finca="+ finca + " " \
-			+ "temperatura=" + temperatura + "," + "presion=" + presion + "," + "humedad=" + humedad + ","  + "uv=" + uv + \
-			"," + "latitud=" + str(latitud) + "," + "longitud=" + str(longitud) + " " + str(time_ns())
-			print(linea)
-			Point(planta)\
-			.tag("finca",finca)\
-			'''

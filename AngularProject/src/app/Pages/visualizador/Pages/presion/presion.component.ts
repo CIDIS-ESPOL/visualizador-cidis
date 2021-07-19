@@ -65,7 +65,7 @@ export class PresionComponent implements OnInit {
     this.cultivo = paramsObject.params["cultivo"]
     this.finca = paramsObject.params["finca"]
 
-    this.fincaS.get_fincas(this.cultivo,this.fincas2)
+    this.fincaS.get_fincas(this.fincas2)
 
     this.tiempos = [ ...HttpGrafana.getTiempos() ]
     this.tiempoSeleccionado = this.tiempos[0]

@@ -6,13 +6,14 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './Pages/login/login.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SeleccionCultivoComponent } from './Pages/seleccion-cultivo/seleccion-cultivo.component';
 import { SpinnerComponent } from './Pages/spinner/spinner.component';
 import { SpinnerInterceptor } from './Interceptors/spinner.interceptor';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatProgressSpinnerModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    FormsModule,
     NgbModule,
   ],
   providers: [
@@ -39,6 +41,10 @@ import { MatButtonModule } from '@angular/material/button';
       useClass: SpinnerInterceptor,
       multi: true,
     },
+    {
+      provide: LocationStrategy, 
+      useClass: HashLocationStrategy,
+    }
   ],
   bootstrap: [AppComponent]
 })

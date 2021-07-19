@@ -15,29 +15,14 @@ export class FincaService {
     private cookie: CookieService,
   ) { }
 
-  get_fincas(cultivo: string, fincas: string[]) {
+  get_fincas(fincas: string[]) {
 
-    let values = this.cookie.getItem("Fincas")
-    
-    console.log(values)
-
-    if (values !== undefined) {
-    
-    	if(values.length > 11){
-    		let object = JSON.parse(values)
-
-      object["data"].forEach((element: string) => {
-        fincas.push(element)
-      });
-    }
-    }else {
-      let bucket = this.cookie.getItem("Bucket")
+    let bucket = this.cookie.getItem("Bucket")
 
       let token = this.cookie.getItem('Token')
 
       let data = {
         bucket: bucket,
-        cultivo: cultivo
       }
 
       let httpOptionsRest = {
@@ -69,15 +54,6 @@ export class FincaService {
           console.log(error)
           alert('Hubo un problema al enviar solicitud')
         })
-    }
-
-    
-
-
-
-    /*
-    
-    */
 
   }
 }

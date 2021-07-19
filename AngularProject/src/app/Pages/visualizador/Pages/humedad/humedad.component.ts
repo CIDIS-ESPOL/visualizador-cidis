@@ -60,7 +60,7 @@ export class HumedadComponent implements OnInit {
     	this.finca = params.get('finca') as string
     });  
 
-    this.fincaS.get_fincas(this.cultivo,this.fincas2)
+    this.fincaS.get_fincas(this.fincas2)
 
     this.tiempos = [ ...HttpGrafana.getTiempos() ]
     this.tiempoSeleccionado = this.tiempos[0]

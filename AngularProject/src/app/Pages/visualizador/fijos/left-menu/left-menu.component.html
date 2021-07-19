@@ -61,7 +61,7 @@
             data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="wi wi-fw wi-barometer"></i>
-            <span>precipitacion</span>
+            <span>Lluvia</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar"
             #collapse2="ngbCollapse" [(ngbCollapse)]="isCollapsed2">
@@ -106,7 +106,7 @@
             [attr.aria-expanded]="!isCollapsed4"
             aria-controls="collapsePages">
             <i class="fa fa-sun" aria-hidden="true"></i>
-            <span>Indice UV</span>
+            <span>Radiación Solar</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" 
             #collapse4="ngbCollapse" [(ngbCollapse)]="isCollapsed4"
@@ -119,6 +119,17 @@
                 >{{finca}}</a>
             </div>
         </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block text-white">
+
+    <li class="nav-item">
+        <a class="nav-link" 
+        [routerLink]="['/dashboard/home',{outlets:{'home': ['sensores']}}]" routerLinkActive="active">
+            <i class="fa fa-sun" aria-hidden="true"></i>
+            <span>Configuración de Sensores</span>
+        </a>
     </li>
 
     <!-- Divider -->

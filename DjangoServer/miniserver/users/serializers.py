@@ -11,4 +11,4 @@ class UserSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ('id','user','bucket_name')
+        fields = ('id','user','bucket_name','cultivos')

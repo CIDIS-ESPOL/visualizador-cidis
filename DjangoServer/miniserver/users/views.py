@@ -1,3 +1,5 @@
+from cultivo.serializers import CultivoSerializer
+from cultivo.models import Cultivo
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 
@@ -79,5 +81,26 @@ def login(request):
         return Response(data, status=HTTP_200_OK)
 
     return Response({'error': 'User not authorized'}, status=HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication,TokenAuthentication])
+@permission_classes([AllowAny])
+def get_cultivos(request):
+    if request.user.is_authenticated:
+        bucket = request.data.get("bucket")
+        
+        result = generics.get_object_or_404(Usuario,bucket_name=bucket)
+
+        if result is not None:
+            cultivos = result.cultivos.all()
+            serializer = CultivoSerializer(cultivos,many=True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response({'message': 'Error al obtener los cultivos'},status=status.HTTP_400_BAD_REQUEST)
+
+    msg={
+            'error':'Permission Denied!'
+        }
+    return Response(msg,status=status.HTTP_403_FORBIDDEN)
     
         

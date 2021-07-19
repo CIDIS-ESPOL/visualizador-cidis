@@ -12,9 +12,11 @@ export class HttpUrl {
 
     static url_login = HttpUrl.urlMiddleware + 'users/login'
     static url_grafana_config = HttpUrl.urlMiddleware + 'config/configuracion'
-    static url_cultivos = HttpUrl.urlMiddleware + 'external/cultivos'
-    static url_fincas = HttpUrl.urlMiddleware + 'external/fincas'
+    static url_cultivos = HttpUrl.urlMiddleware + 'users/cultivos'
+    static url_fincas = HttpUrl.urlMiddleware + 'info/finca/fincas'
     static url_images = HttpUrl.urlMiddleware + 'external/images'
+    static url_sensores = HttpUrl.urlMiddleware + 'info/sensor/getsensoresall'
+    static url_sensores_crud = HttpUrl.urlMiddleware + 'info/sensor/sensor'
 
     static httpOptionsRest = {
         headers: new HttpHeaders({

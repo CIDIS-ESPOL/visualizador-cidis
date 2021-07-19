@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'config',
     'influxdb',
     'cultivo',
+    'finca',
+    'sensores',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -22,5 +22,9 @@ urlpatterns = [
     path('users/',include('users.urls')),
     path('config/',include('config.urls')),
     path('external/',include('influxdb.urls')),
-    path('info/',include('cultivo.urls')),
+    path('info/',include([
+        path('cultivo/',include('cultivo.urls')),
+        path('finca/',include('finca.urls')),
+        path('sensor/',include('sensores.urls')),      
+    ])),
 ]

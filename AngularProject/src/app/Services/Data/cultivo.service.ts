@@ -19,29 +19,7 @@ export class CultivoService {
 
   get_cultivos(cultivos: { nombre: any; imagen: string; }[]) {
 
-    let values = this.cookie.getItem("Cultivos")
-    
-
-    if (values !== undefined) {
-    
-    
-    if(values.length > 11){
-    		
-    		let object = JSON.parse(values)
-
-      object["data"].forEach((element: { nombre: any; imagen: string; }) => {
-        cultivos.push(element)
-      });
-    }
-    
-
-      
-
-    } else {
-    
-    
-      
-      let bucket = this.cookie.getItem("Bucket")
+    let bucket = this.cookie.getItem("Bucket")
 
       let token = this.cookie.getItem('Token')
 
@@ -81,7 +59,6 @@ export class CultivoService {
           console.log(error)
           alert('Hubo un error en la peticion')
         })
-    }
 	   
     	
   }

@@ -1,3 +1,5 @@
+import { SensorDetalleComponent } from './Pages/sensor-detalle/sensor-detalle.component';
+import { SensorComponent } from './Pages/sensor/sensor.component';
 import { PrecipitacionComponent } from './Pages/precipitacion/precipitacion.component';
 import { UvComponent } from './Pages/uv/uv.component';
 import { PresionComponent } from './Pages/presion/presion.component';
@@ -27,6 +29,12 @@ const routes: Routes = [
       },
       {
         path: "humedad/:cultivo/:finca", component: HumedadComponent, outlet: "home"
+      },
+      {
+        path: "sensores", component: SensorComponent, outlet: "home"
+      },
+      {
+        path: "sensor/:id", component: SensorDetalleComponent, outlet: "home"
       }
         
     ]

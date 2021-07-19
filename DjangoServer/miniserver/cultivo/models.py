@@ -11,7 +11,7 @@ def get_upload_to_cultivo(instance, filename):
 
 # Create your models here.
 class Cultivo(models.Model):
-    nombre = models.CharField(max_length=200)
+    nombre = models.CharField(max_length=200,unique=True)
     imagen = models.ImageField(null=True,blank=True,upload_to=get_upload_to_cultivo)
     minimo_temperatura = models.FloatField(blank=True,default=0)
     maximo_temperatura = models.FloatField(blank=True,default=0)
@@ -63,3 +63,5 @@ def auto_delete_file_on_change_Cultivo(sender, instance, **kwargs):
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
+
+
