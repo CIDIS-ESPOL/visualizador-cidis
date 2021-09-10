@@ -125,7 +125,7 @@ serial==0.0.97
 simplejson==3.16.0
 sip==4.19.21
 six==1.14.0
-sqlparse==0.4.1
+sqlparse==0.4.2
 ssh-import-id==5.10
 stegcracker==2.0.9
 stego-lsb==1.3
