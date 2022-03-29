@@ -78,7 +78,7 @@ olefile==0.46
 p==0.0.0
 packaging==20.3
 pandas==1.2.2
-paramiko==2.6.0
+paramiko==2.10.1
 pexpect==4.6.0
 Pillow==7.0.0
 ply==3.11
